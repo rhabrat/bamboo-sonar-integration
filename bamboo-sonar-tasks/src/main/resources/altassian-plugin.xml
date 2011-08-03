@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Licensed to Marvelution under one or more contributor license 
+ ~ agreements.  See the NOTICE file distributed with this work 
+ ~ for additional information regarding copyright ownership.
+ ~ Marvelution licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~  http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied. See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<atlassian-plugin name="${atlassian.plugin.name}" key="${atlassian.plugin.key}" system="false" pluginsVersion="1">
+	<plugin-info>
+		<description>${project.description}</description>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+		<version>${project.version}</version>
+		<application-version min="3.2" max="3.2"/>
+	</plugin-info>
+
+	<!-- I 1 8 N   R E S O U R C E S -->
+	<resource type="i18n" name="i18n" location="com.marvelution.bamboo.plugins.sonar.i18n"/>
+
+	<!-- T A S K   T Y P E   D E F I N I T I O N S -->
+	<taskType key="task.builder.sonar" name="Sonar Runner" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerBuildTask">
+		<description>Execute a Sonar Analysis using an Embedded Sonar Runner</description>
+		<category name="builder"/>
+		<category name="test"/>
+		<configuration class="com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarBuildTaskConfigurator" />
+		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarBuildTaskEdit.ftl"/>
+		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarBuildTaskView.ftl"/>
+	</taskType>
+
+	<taskType key="task.builder.sonar2" name="Sonar Maven 2.x" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarMaven2BuildTask">
+		<description>Execute a Sonar Analysis using Maven 2.x</description>
+		<category name="builder"/>
+		<category name="test"/>
+		<executable key="mvn2" nameKey="builder.maven2.executableName" pathHelpKey="builder.maven2.helpPath"/>
+		<configuration class="com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarMaven2BuildTaskConfigurator" />
+		<!-- Reuse the Maven 2 CapabilityHelper of Atlassian -->
+		<capabilityDefaultsHelper class="com.atlassian.bamboo.plugins.maven.task.Maven2CapabilityDefaultsHelper"/>
+		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven2BuildTaskEdit.ftl"/>
+		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven2BuildTaskView.ftl"/>
+	</taskType>
+
+	<taskType key="task.builder.sonar3" name="Sonar Maven 3.x" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarMaven3BuildTask">
+		<description>Execute a Sonar Analysis using Maven 3.x</description>
+		<category name="builder"/>
+		<category name="test"/>
+		<executable key="mvn3" nameKey="builder.maven3.executableName" pathHelpKey="builder.maven3.helpPath"/>
+		<configuration class="com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarMaven3BuildTaskConfigurator" />
+		<!-- Reuse the Maven 3 CapabilityHelper of Atlassian -->
+		<capabilityDefaultsHelper class="com.atlassian.bamboo.plugins.maven.task.Maven3CapabilityDefaultsHelper"/>
+		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven3BuildTaskEdit.ftl"/>
+		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven3BuildTaskView.ftl"/>
+	</taskType>
+
+</atlassian-plugin>

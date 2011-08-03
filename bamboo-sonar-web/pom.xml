@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Licensed to Marvelution under one or more contributor license 
+ ~ agreements.  See the NOTICE file distributed with this work 
+ ~ for additional information regarding copyright ownership.
+ ~ Marvelution licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~  http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied. See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>bamboo-sonar-integration</artifactId>
+		<groupId>com.marvelution.bamboo.plugins</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>bamboo-sonar-web</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Bamboo Sonar Web</name>
+	<description>Set of Web UI related items to integrate the Sonar Analysis results within Atlassian Bamboo</description>
+	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.parent.version}/${project.artifactId}</url>
+
+	<scm>
+		<connection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-web</connection>
+		<developerConnection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-web</developerConnection>
+		<url>http://fisheye.marvelution.com/browse/public/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-web</url>
+	</scm>
+
+	<properties>
+		<sonar.gadgets.version>1.4.0-SNAPSHOT</sonar.gadgets.version>
+		<atlassian.plugin.name>${project.name}</atlassian.plugin.name>
+		<atlassian.plugin.key>${atlassian.plugin.key.base}.web</atlassian.plugin.key>
+		<sonar.gadgets.directory>${project.build.directory}/generated-resources/sonar-gadgets</sonar.gadgets.directory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.atlassian.bamboo</groupId>
+			<artifactId>atlassian-bamboo-web</artifactId>
+			<version>${atlassian.bamboo.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.marvelution.gadgets</groupId>
+			<artifactId>sonar-gadgets</artifactId>
+			<version>${sonar.gadgets.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.moxy</artifactId>
+			<version>2.3.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-ws-client</artifactId>
+			<version>${sonar.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>atlassian-plugin.xml</exclude>
+					<exclude>gadgets/*.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>atlassian-plugin.xml</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${sonar.gadgets.directory}</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>atlassian-plugin.xml</include>
+					<include>gadgets/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${sonar.gadgets.directory}</directory>
+				<includes>
+					<include>i18n/**/**.properties</include>
+					<include>images/**/**</include>
+					<include>scripts/**/**.js</include>
+					<include>styles/**/**.css</include>
+					<include>**/*.class</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<version>0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compress</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Everything on one line -->
+					<linebreakpos>-1</linebreakpos>
+					<!-- Don't really care about warning messages. They're fairly useless -->
+					<jswarn>false</jswarn>
+					<excludes>
+						<exclude>**/*.class</exclude>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/*-min*</exclude>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/*.png</exclude>
+						<exclude>**/*.gif</exclude>
+						<exclude>**/*.vm</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.0</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.marvelution.gadgets</groupId>
+							<artifactId>sonar-gadgets</artifactId>
+							<version>${sonar.gadgets.version}</version>
+							<type>jar</type>
+							<overWrite>true</overWrite>
+							<includes>**/*.*</includes>
+						</artifactItem>
+					</artifactItems>
+					<outputDirectory>${sonar.gadgets.directory}</outputDirectory>
+					<overWriteReleases>true</overWriteReleases>
+					<overWriteSnapshots>true</overWriteSnapshots>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.2.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
+						<Bundle-SymbolicName>${atlassian.plugin.key}</Bundle-SymbolicName>
+						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+						<Embed-Dependency>*;scope=compile|runtime;inline=false;artifactId=!clover|sonar-gadgets</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Embed-Directory>META-INF/lib</Embed-Directory>
+						<Embed-StripGroup>false</Embed-StripGroup>
+						<Embed-StripVersion>false</Embed-StripVersion>
+						<Export-Package>
+							com.marvelution.bamboo.plugins.sonar.web*;version="${project.version}"
+						</Export-Package>
+						<Import-Package>
+							*;resolution:=optional
+						</Import-Package>
+						<DynamicImport-Package>*</DynamicImport-Package>
+						<Include-Resource>
+							{maven-resources},
+							{maven-dependencies},
+						</Include-Resource>
+						<Spring-Context>*;timeout:=60</Spring-Context>
+					</instructions>
+					<excludeDependencies>
+						clover,sonar-gadgets
+					</excludeDependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xml-maven-plugin</artifactId>
+				<version>1.0-beta-3</version>
+				<executions>
+					<execution>
+						<id>merge-atlassian-plugin-xml</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>transform</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<forceCreation>true</forceCreation>
+					<transformationSets>
+						<transformationSet>
+							<dir>src/main/resources</dir>
+							<includes>
+								<include>atlassian-plugin.xml</include>
+							</includes>
+							<stylesheet>${sonar.gadgets.directory}/xslt/merge-atlassian-plugin.xsl</stylesheet>
+							<outputDir>${sonar.gadgets.directory}</outputDir>
+							<parameters>
+								<parameter>
+									<name>with</name>
+									<value>${sonar.gadgets.directory}/common-atlassian-plugin.xml</value>
+								</parameter>
+							</parameters>
+						</transformationSet>
+					</transformationSets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
