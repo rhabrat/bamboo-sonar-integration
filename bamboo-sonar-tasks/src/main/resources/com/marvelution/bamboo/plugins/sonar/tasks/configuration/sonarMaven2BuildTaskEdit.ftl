@@ -23,12 +23,4 @@
             list=uiConfigBean.getExecutableLabels('mvn2')
             extraUtility=addExecutableLink /]
 
-[#assign addJdkLink][@ui.displayAddJdkInline /][/#assign]
-[@ww.select cssClass="jdkSelectWidget"
-            labelKey='builder.common.jdk' name='buildJdk'
-            list=uiConfigBean.jdkLabels required='true'
-            extraUtility=addJdkLink /]
-
-[@ww.textfield labelKey='builder.maven2.projectFile' name='projectFile' cssClass="long-field" /]
-[@ww.textfield labelKey='builder.common.env' name='environmentVariables' cssClass="long-field" /]
-[@ww.textfield labelKey='builder.common.sub' name='workingSubDirectory' helpUri='working-directory.ftl' cssClass="long-field" /]
+[#include "commonSonarMavenBuildTaskEdit.ftl"]

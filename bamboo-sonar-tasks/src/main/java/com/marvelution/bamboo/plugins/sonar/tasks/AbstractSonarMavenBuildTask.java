@@ -83,7 +83,7 @@ public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractMavenCo
 		final BuildLogger buildLogger = taskContext.getBuildLogger();
 		final CurrentBuildResult currentBuildResult = taskContext.getBuildContext().getBuildResult();
 
-		AbstractMavenConfig config = getMavenConfiguration(taskContext);
+		CONFIG config = getMavenConfiguration(taskContext);
 
 		StringMatchingInterceptor buildSuccessMatcher =
 			new StringMatchingInterceptor(BUILD_SUCCESSFUL_MARKER, SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE);

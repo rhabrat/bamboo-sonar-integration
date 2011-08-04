@@ -16,11 +16,7 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-[#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigBean" --]
 
-[#assign addExecutableLink][@ui.displayAddExecutableInline executableKey='mvn3'/][/#assign]
-[@ww.select cssClass="builderSelectWidget" labelKey='executable.type' name='label'
-            list=uiConfigBean.getExecutableLabels('mvn3')
-            extraUtility=addExecutableLink /]
-
-[#include "commonSonarMavenBuildTaskEdit.ftl"]
+[@ui.bambooSection titleKey='sonar.extra.configuration']
+	[@ww.textfield labelKey='sonar.language' name='sonarLanguage' cssClass="long-field" /]
+[/@ui.bambooSection]

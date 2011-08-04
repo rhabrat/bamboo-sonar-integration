@@ -51,15 +51,24 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.atlassian.bamboo.plugins.maven</groupId>
-			<artifactId>atlassian-bamboo-plugin-maven</artifactId>
-			<version>${atlassian.bamboo.version}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
+		<!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>atlassian-plugin.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>atlassian-plugin.xml</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>

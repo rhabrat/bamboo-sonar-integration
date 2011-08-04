@@ -19,15 +19,12 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks.configuration;
 
-import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.plugins.maven.task.Maven2Config;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.v2.build.agent.capability.Requirement;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,17 +34,7 @@ import java.util.Set;
  */
 public class SonarMaven2BuildTaskConfigurator extends AbstractSonarMavenBuildTaskConfigurator {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@NotNull
-	@Override
-	public Map<String, String> generateTaskConfigMap(@NotNull final ActionParametersMap params,
-					@Nullable final TaskDefinition previousTaskDefinition) {
-		final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
-		// TODO Check Sonar goals
-		return config;
-	}
+	public static final String SONAR_PLUGIN_VERSION = "1.0-beta-2";
 
 	/**
 	 * {@inheritDoc}
@@ -59,6 +46,14 @@ public class SonarMaven2BuildTaskConfigurator extends AbstractSonarMavenBuildTas
 		taskConfiguratorHelper.addSystemRequirementFromConfiguration(requirements, taskDefinition,
 			TaskConfigConstants.CFG_BUILDER_LABEL, Maven2Config.M2_CAPABILITY_PREFIX);
 		return requirements;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getSonarMavenPluginVersion() {
+		return SONAR_PLUGIN_VERSION;
 	}
 
 }

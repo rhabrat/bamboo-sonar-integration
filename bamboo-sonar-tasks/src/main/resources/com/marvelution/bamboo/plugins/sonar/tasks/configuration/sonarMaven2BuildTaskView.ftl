@@ -19,7 +19,5 @@
 [#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigBean" --]
 
 [@ww.label labelKey='executable.type' name='label' /]
-[@ww.label labelKey='builder.maven2.projectFile' name='projectFile' hideOnNull='true' /]
-[@ui.displayJdk jdkLabel=buildJdk isJdkValid=uiConfigBean.isJdkLabelValid(buildJdk) /]
-[@ww.label labelKey='builder.common.env' name='environmentVariables' hideOnNull='true'/]
-[@ww.label labelKey='builder.common.sub' name='workingSubDirectory' hideOnNull='true' /]
+
+[#include "commonSonarMavenBuildTaskView.ftl"]
