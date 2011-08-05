@@ -26,6 +26,7 @@
 [@ww.textfield labelKey='builder.maven2.projectFile' name='projectFile' cssClass="long-field" /]
 [@ww.textfield labelKey='builder.common.env' name='environmentVariables' cssClass="long-field" /]
 [@ww.textfield labelKey='builder.common.sub' name='workingSubDirectory' helpUri='working-directory.ftl' cssClass="long-field" /]
+[@ww.checkbox labelKey='sonar.plugin.preinstalled' name='sonarPluginPreInstalled' /]
 
 [@ui.bambooSection titleKey='sonar.jdbc.configuration']
 	[@ww.radio labelKey='sonar.jdbc.configuration.option' name='sonarJdbcOption'
@@ -39,7 +40,7 @@
         [@ww.textfield labelKey='sonar.host.url' name='sonarHostUrl' required='true' cssClass="long-field" /]
         [@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
         [@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' required='true' cssClass="long-field" /]
-        [@ww.textfield labelKey='sonar.jdbc.password' name='sonarJdbcPassword' required='true' cssClass="long-field" /]
+        [@ww.password labelKey='sonar.jdbc.password' name='sonarJdbcPassword' required='true' cssClass="long-field" /]
         [@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
     [/@ui.bambooSection]
 [/@ui.bambooSection]

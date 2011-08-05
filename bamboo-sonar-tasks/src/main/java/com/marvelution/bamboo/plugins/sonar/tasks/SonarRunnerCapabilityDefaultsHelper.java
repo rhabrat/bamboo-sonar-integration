@@ -31,7 +31,9 @@ import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 public class SonarRunnerCapabilityDefaultsHelper extends AbstractHomeDirectoryCapabilityDefaultsHelper {
 
 	public static final String SONAR_RUNNER_PREFIX = CAPABILITY_BUILDER_PREFIX + ".snr";
-	public static final SystemProperty SONAR_SUNNER_HOME = new SystemProperty(false, new String[] { "SONAR_RUNNER_HOME" });
+	public static final String SONAR_RUNNER_EXECUTABLE = "sonar-runner";
+	public static final String SONAR_RUNNER_HOME = "SONAR_RUNNER_HOME";
+	public static final SystemProperty ENV_SONAR_SUNNER_HOME = new SystemProperty(false, new String[] { SONAR_RUNNER_HOME });
 
 	/**
 	 * {@inheritDoc}
@@ -47,7 +49,7 @@ public class SonarRunnerCapabilityDefaultsHelper extends AbstractHomeDirectoryCa
 	 * @return the executable name
 	 */
 	public static final String getExecutable() {
-		return ExecutablePathUtils.makeBatchIfOnWindows("sonar-runner");
+		return ExecutablePathUtils.makeBatchIfOnWindows(SONAR_RUNNER_EXECUTABLE);
 	}
 
 	/**
@@ -55,7 +57,7 @@ public class SonarRunnerCapabilityDefaultsHelper extends AbstractHomeDirectoryCa
 	 */
 	@Override
 	protected String getEnvHome() {
-		return SONAR_SUNNER_HOME.getValue();
+		return ENV_SONAR_SUNNER_HOME.getValue();
 	}
 
 	/**

@@ -21,6 +21,11 @@
 [@ui.displayJdk jdkLabel=buildJdk isJdkValid=uiConfigBean.isJdkLabelValid(buildJdk) /]
 [@ww.label labelKey='builder.common.env' name='environmentVariables' hideOnNull='true'/]
 [@ww.label labelKey='builder.common.sub' name='workingSubDirectory' hideOnNull='true' /]
+[@ww.label labelKey='sonar.plugin.preinstalled' escape="false"]
+    [@ww.param name='value' ]
+        [@ui.displayYesOrNo sonarPluginPreInstalled /]
+    [/@ww.param]
+[/@ww.label]
 
 [#if usesProfile ]
 	[@ww.label labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' /]

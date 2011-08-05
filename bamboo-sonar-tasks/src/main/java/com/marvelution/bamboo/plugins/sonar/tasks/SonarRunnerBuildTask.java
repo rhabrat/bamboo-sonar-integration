@@ -20,14 +20,22 @@
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
 import com.atlassian.bamboo.build.logger.BuildLogger;
+import com.atlassian.bamboo.build.logger.interceptors.ErrorMemorisingInterceptor;
+import com.atlassian.bamboo.build.logger.interceptors.LogMemorisingInterceptor;
+import com.atlassian.bamboo.build.logger.interceptors.StringMatchingInterceptor;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
+import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.bamboo.process.ProcessService;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.TaskException;
 import com.atlassian.bamboo.task.TaskResult;
+import com.atlassian.bamboo.task.TaskResultBuilder;
 import com.atlassian.bamboo.task.TaskType;
+import com.atlassian.bamboo.utils.SystemProperty;
 import com.atlassian.bamboo.v2.build.CurrentBuildResult;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
+import com.atlassian.utils.process.ExternalProcess;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -36,6 +44,12 @@ import org.jetbrains.annotations.NotNull;
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 public class SonarRunnerBuildTask implements TaskType {
+
+	private static final String BUILD_SUCCESSFUL_MARKER = "ANALYSIS SUCCESSFUL";
+	private static final boolean SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE =
+		SystemProperty.SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE.getValue(false);
+	private static final int LINES_TO_PARSE_FOR_ERRORS = 200;
+	private static final int FIND_SUCCESS_MESSAGE_IN_LAST = SystemProperty.FIND_SUCCESS_MESSAGE_IN_LAST.getValue(250);
 
 	private final CapabilityContext capabilityContext;
 	private final EnvironmentVariableAccessor environmentVariableAccessor;
@@ -61,9 +75,37 @@ public class SonarRunnerBuildTask implements TaskType {
 	@Override
 	@NotNull
 	public TaskResult execute(@NotNull TaskContext taskContext) throws TaskException {
-		BuildLogger buildLogger = taskContext.getBuildLogger();
-		CurrentBuildResult currentBuildResult = taskContext.getBuildContext().getBuildResult();
-		// TODO Code me
-		return null;
+		final BuildLogger buildLogger = taskContext.getBuildLogger();
+		final CurrentBuildResult currentBuildResult = taskContext.getBuildContext().getBuildResult();
+
+		SonarRunnerConfig config = new SonarRunnerConfig(taskContext, capabilityContext, environmentVariableAccessor);
+
+		StringMatchingInterceptor buildSuccessMatcher =
+			new StringMatchingInterceptor(BUILD_SUCCESSFUL_MARKER, SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE);
+		LogMemorisingInterceptor recentLogLines = new LogMemorisingInterceptor(LINES_TO_PARSE_FOR_ERRORS);
+		ErrorMemorisingInterceptor errorLines = new ErrorMemorisingInterceptor();
+
+		buildLogger.getInterceptorStack().add(buildSuccessMatcher);
+		buildLogger.getInterceptorStack().add(recentLogLines);
+		buildLogger.getInterceptorStack().add(errorLines);
+		
+		try {
+			ExternalProcess externalProcess = processService.executeProcess(taskContext,
+					new ExternalProcessBuilder().workingDirectory(config.getWorkingDirectory())
+						.env(config.getExtraEnvironment()).command(config.getCommandline()));
+			if (externalProcess.getHandler().isComplete()) {
+				TaskResultBuilder taskResultBuilder =
+					TaskResultBuilder.create(taskContext).checkReturnCode(externalProcess)
+						.checkInterceptorMatches(buildSuccessMatcher, FIND_SUCCESS_MESSAGE_IN_LAST);
+				return taskResultBuilder.build();
+			}
+
+			throw new TaskException("Failed to execute sonar command, external process not completed?");
+		} catch (Exception e) {
+			throw new TaskException("Failed to execute sonar task", e);
+		} finally {
+			currentBuildResult.addBuildErrors(errorLines.getErrorStringList());
+		}
 	}
+
 }

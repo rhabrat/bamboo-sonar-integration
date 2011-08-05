@@ -55,6 +55,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 	private static final String SONAR_PLUGIN_GROUPID = "org.codehaus.mojo";
 	private static final String SONAR_PLUGIN_ARTIFACTID = "sonar-maven-plugin";
 	private static final String SONAR_PLUGIN_GOAL = "sonar";
+	private static final String CTX_SONAR_PLUGIN_PREINSTALLED = "sonarPluginPreInstalled";
 
 	private static final String CTX_SONAR_JDBC_OPTIONS = "sonarJdbcOptions";
 	private static final Map<String, String> CFG_SONAR_JDBC_OPTIONS = ImmutableMap.of(
@@ -64,7 +65,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 
 	private static final String CFG_GOALS = AbstractMavenConfig.CFG_GOALS;
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_GOALS, CFG_SONAR_JDBC_PROFILE,
-		CFG_SONAR_JDBC_OPTION);
+		CFG_SONAR_JDBC_OPTION, CTX_SONAR_PLUGIN_PREINSTALLED);
 
 	/**
 	 * {@inheritDoc}
@@ -75,8 +76,12 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 					@Nullable final TaskDefinition previousTaskDefinition) {
 		Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 		taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(config, params, FIELDS_TO_COPY);
-		config.put(CFG_GOALS, SONAR_PLUGIN_GROUPID + ":" + SONAR_PLUGIN_ARTIFACTID + ":"
-			+ getSonarMavenPluginVersion() + ":" + SONAR_PLUGIN_GOAL);
+		if (params.getBoolean(CTX_SONAR_PLUGIN_PREINSTALLED)) {
+			config.put(CFG_GOALS, SONAR_PLUGIN_GOAL + ":" + SONAR_PLUGIN_GOAL);
+		} else {
+			config.put(CFG_GOALS, SONAR_PLUGIN_GROUPID + ":" + SONAR_PLUGIN_ARTIFACTID + ":"
+				+ getSonarMavenPluginVersion() + ":" + SONAR_PLUGIN_GOAL);
+		}
 		return config;
 	}
 

@@ -18,3 +18,5 @@
  -->
 
 [@ww.label labelKey='sonar.language' name='sonarLanguage' hideOnNull='true' /]
+[@ww.label labelKey='sonar.java.source' name='sonarJavaSource' hideOnNull='true' /]
+[@ww.label labelKey='sonar.java.target' name='sonarJavaTarget' hideOnNull='true' /]

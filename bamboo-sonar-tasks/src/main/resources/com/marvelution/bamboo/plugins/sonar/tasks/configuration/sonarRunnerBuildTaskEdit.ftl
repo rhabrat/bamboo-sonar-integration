@@ -29,6 +29,8 @@
             list=uiConfigBean.jdkLabels required='true'
             extraUtility=addJdkLink /]
 
+[@ww.textfield labelKey='builder.common.env' name='environmentVariables' cssClass="long-field" /]
+
 [@ww.checkbox labelKey='sonar.runner.project.setup' name='projectConfigured' toggle='true'/]
 [@ww.checkbox labelKey='sonar.runner.server.setup' name='serverConfigured' toggle='true'/]
 [@ui.bambooSection titleKey='sonar.project.configuration' dependsOn='projectConfigured' showOn='false']
@@ -46,7 +48,7 @@
 	[@ui.bambooSection titleKey='sonar.jdbc.configuration']
 		[@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
 		[@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' required='true' cssClass="long-field" /]
-		[@ww.textfield labelKey='sonar.jdbc.password' name='sonarJdbcPassword' required='true' cssClass="long-field" /]
+		[@ww.password labelKey='sonar.jdbc.password' name='sonarJdbcPassword' required='true' cssClass="long-field" /]
 		[@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
 	[/@ui.bambooSection]
 [/@ui.bambooSection]

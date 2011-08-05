@@ -27,9 +27,9 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarHelper;
 
 /**
  * Abstract {@link TaskProcessCommandDecorator} to add Sonar Server settings to a command
@@ -43,16 +43,16 @@ public abstract class AbstractSonarServerConfigurationCommandDecorator implement
 	 */
 	public void addSonarServerProperties(@NotNull TaskContext taskContext, @NotNull List<String> command) {
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
-		MavenHelper.addPropertyToCommand(command, "sonar.host.url", configuration.get(CFG_SONAR_HOST_URL));
-		MavenHelper.addPropertyToCommand(command, "sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
-		MavenHelper.addPropertyToCommand(command, "sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
+		SonarHelper.addPropertyToCommand(command, "sonar.host.url", configuration.get(CFG_SONAR_HOST_URL));
+		SonarHelper.addPropertyToCommand(command, "sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
+		SonarHelper.addPropertyToCommand(command, "sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
 		// Sonar JDBC URL is optional
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_URL))) {
-			MavenHelper.addPropertyToCommand(command, "sonar.jdbc.url", configuration.get(CFG_SONAR_JDBC_URL));
+			SonarHelper.addPropertyToCommand(command, "sonar.jdbc.url", configuration.get(CFG_SONAR_JDBC_URL));
 		}
 		// Sonar JDBC Driver is optional
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_DRIVER))) {
-			MavenHelper.addPropertyToCommand(command, "sonar.jdbc.dirverClassName",
+			SonarHelper.addPropertyToCommand(command, "sonar.jdbc.dirverClassName",
 				configuration.get(CFG_SONAR_JDBC_DRIVER));
 		}
 	}

@@ -27,9 +27,9 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarHelper;
 
 /**
  * Abstract {@link TaskProcessCommandDecorator} to add Sonar Server settings to a command
@@ -44,7 +44,7 @@ public abstract class AbstractSonarExtraProjectConfigurationCommandDecorator imp
 	public void addSonarExtraProjectProperties(@NotNull TaskContext taskContext, @NotNull List<String> command) {
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_LANGUAGE))) {
-			MavenHelper.addPropertyToCommand(command, "sonar.language", configuration.get(CFG_SONAR_LANGUAGE));
+			SonarHelper.addPropertyToCommand(command, "sonar.language", configuration.get(CFG_SONAR_LANGUAGE));
 		}
 	}
 

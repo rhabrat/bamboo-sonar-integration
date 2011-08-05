@@ -30,7 +30,7 @@
 
 	<!-- T A S K   T Y P E   D E F I N I T I O N S -->
 	<taskType key="task.builder.sonar" name="Sonar Runner" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerBuildTask">
-		<description>Execute a Sonar Analysis using an Embedded Sonar Runner</description>
+		<description>Execute a Sonar Analysis using the Sonar Runner</description>
 		<category name="builder"/>
 		<category name="test"/>
 		<executable key="snr" nameKey="task.builder.sonar.executableName" pathHelpKey="task.builder.sonar.helpPath"/>

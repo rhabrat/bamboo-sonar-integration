@@ -56,9 +56,12 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	public static final String CFG_SONAR_JDBC_DRIVER = "sonarJdbcDriver";
 
 	public static final String CFG_SONAR_LANGUAGE = "sonarLanguage";
+	public static final String CFG_SONAR_JAVA_SOURCE = "sonarJavaSource";
+	public static final String CFG_SONAR_JAVA_TARGET = "sonarJavaTarget";
 
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_HOST_URL, CFG_SONAR_JDBC_URL,
-		CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD, CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE);
+		CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD, CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE,
+		CFG_SONAR_JAVA_SOURCE, CFG_SONAR_JAVA_TARGET);
 	private static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
 
 	protected TextProvider textProvider;

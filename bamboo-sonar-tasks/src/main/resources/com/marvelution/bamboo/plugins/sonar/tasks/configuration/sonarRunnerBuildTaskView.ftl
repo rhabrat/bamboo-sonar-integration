@@ -20,6 +20,7 @@
 
 [@ww.label labelKey='executable.type' name='label' /]
 [@ui.displayJdk jdkLabel=buildJdk isJdkValid=uiConfigBean.isJdkLabelValid(buildJdk) /]
+[@ww.label labelKey='builder.common.env' name='environmentVariables' hideOnNull='true'/]
 [#if !serverConfigured ]
 	[@ww.label labelKey='sonar.host.url' name='sonarHostUrl' /]
 	[@ww.label labelKey='sonar.jdbc.url' name='sonarJdbcUrl' /]

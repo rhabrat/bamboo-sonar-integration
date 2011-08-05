@@ -27,10 +27,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
 import com.google.common.collect.Lists;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarHelper;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Project properties to the Sonar Runner command if needed.
@@ -56,21 +56,21 @@ public class SonarRunnerProjectConfigurationCommandDecorator extends
 		List<String> decoratedCommand = Lists.newArrayList(command);
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
 		if (!configuration.getAsBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
-			MavenHelper.addPropertyToCommand(decoratedCommand, "sonar.projectKey",
+			SonarHelper.addPropertyToCommand(decoratedCommand, "sonar.projectKey",
 				configuration.get(CFG_SONAR_PROJECT_KEY));
-			MavenHelper.addPropertyToCommand(decoratedCommand, "sonar.projectName",
+			SonarHelper.addPropertyToCommand(decoratedCommand, "sonar.projectName",
 				configuration.get(CFG_SONAR_PROJECT_NAME));
-			MavenHelper.addPropertyToCommand(decoratedCommand, "sonar.projectVersion",
+			SonarHelper.addPropertyToCommand(decoratedCommand, "sonar.projectVersion",
 				configuration.get(CFG_SONAR_PROJECT_VERSION));
-			MavenHelper.addPropertyToCommand(decoratedCommand, "sources", configuration.get(CFG_SONAR_SOURCES));
+			SonarHelper.addPropertyToCommand(decoratedCommand, "sources", configuration.get(CFG_SONAR_SOURCES));
 			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_TESTS))) {
-				MavenHelper.addPropertyToCommand(decoratedCommand, "tests", configuration.get(CFG_SONAR_TESTS));
+				SonarHelper.addPropertyToCommand(decoratedCommand, "tests", configuration.get(CFG_SONAR_TESTS));
 			}
 			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_BINARIES))) {
-				MavenHelper.addPropertyToCommand(decoratedCommand, "binaries", configuration.get(CFG_SONAR_BINARIES));
+				SonarHelper.addPropertyToCommand(decoratedCommand, "binaries", configuration.get(CFG_SONAR_BINARIES));
 			}
 			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_LIBRARIES))) {
-				MavenHelper.addPropertyToCommand(decoratedCommand, "libraries",
+				SonarHelper.addPropertyToCommand(decoratedCommand, "libraries",
 					configuration.get(CFG_SONAR_LIBRARIES));
 			}
 		}
