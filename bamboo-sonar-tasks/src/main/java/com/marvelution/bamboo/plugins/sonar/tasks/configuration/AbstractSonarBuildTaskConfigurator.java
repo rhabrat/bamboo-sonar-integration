@@ -46,23 +46,11 @@ import com.opensymphony.xwork.TextProvider;
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskConfigurator implements
-		TaskRequirementSupport {
-
-	public static final String CFG_SONAR_HOST_URL = "sonarHostUrl";
-
-	public static final String CFG_SONAR_JDBC_URL = "sonarJdbcUrl";
-	public static final String CFG_SONAR_JDBC_USERNAME = "sonarJdbcUsername";
-	public static final String CFG_SONAR_JDBC_PASSWORD = "sonarJdbcPassword";
-	public static final String CFG_SONAR_JDBC_DRIVER = "sonarJdbcDriver";
-
-	public static final String CFG_SONAR_LANGUAGE = "sonarLanguage";
-	public static final String CFG_SONAR_JAVA_SOURCE = "sonarJavaSource";
-	public static final String CFG_SONAR_JAVA_TARGET = "sonarJavaTarget";
+		TaskRequirementSupport, SonarConfigConstants {
 
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_HOST_URL, CFG_SONAR_JDBC_URL,
 		CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD, CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE,
 		CFG_SONAR_JAVA_SOURCE, CFG_SONAR_JAVA_TARGET);
-	private static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
 
 	protected TextProvider textProvider;
 	protected UIConfigBean uiConfigBean;
@@ -99,12 +87,7 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 			&& !params.getString(CFG_SONAR_HOST_URL).startsWith("https://")) {
 			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.invalid"));
 		}
-		if (StringUtils.isBlank(params.getString(CFG_SONAR_JDBC_USERNAME))) {
-			errorCollection.addError(CFG_SONAR_JDBC_USERNAME, textProvider.getText("sonar.jdbc.username.mandatory"));
-		}
-		if (StringUtils.isBlank(params.getString(CFG_SONAR_JDBC_PASSWORD))) {
-			errorCollection.addError(CFG_SONAR_JDBC_PASSWORD, textProvider.getText("sonar.jdbc.password.mandatory"));
-		}
+		// TODO Validate the JDBC settings if non default
 	}
 
 	/**
@@ -152,8 +135,9 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 			Iterables.concat(TaskConfigConstants.DEFAULT_BUILDER_CONFIGURATION_KEYS, FIELDS_TO_COPY));
 		if (context.containsKey(CFG_SONAR_JDBC_PASSWORD)) {
 			// Add a fake password context variable to display the password
-			context.put("sonarJdbcPasswd", "******");
+			context.put(CTX_SONAR_FAKE_PASSWORD, SONAR_FAKE_PASSWORD);
 		}
+		// TODO Override JDBC settings if using defaults
 	}
 
 	/**

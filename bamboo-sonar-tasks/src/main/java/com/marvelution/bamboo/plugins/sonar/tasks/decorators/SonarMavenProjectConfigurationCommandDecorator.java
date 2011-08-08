@@ -50,8 +50,18 @@ public class SonarMavenProjectConfigurationCommandDecorator extends
 	@NotNull
 	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
 		List<String> decoratedCommand = Lists.newArrayList(command);
+		// Make sure that the Enforcer plugin doesn't run during the Sonar run.
+		addPropertyToCommand(decoratedCommand, "enforcer.skip", "true");
 		addSonarExtraProjectProperties(taskContext, decoratedCommand);
 		return decoratedCommand;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getPropertyPattern() {
+		return "-D%s=%s";
 	}
 
 }

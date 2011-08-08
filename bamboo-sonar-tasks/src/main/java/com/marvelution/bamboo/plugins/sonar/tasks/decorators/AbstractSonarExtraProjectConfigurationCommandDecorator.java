@@ -29,14 +29,14 @@ import org.jetbrains.annotations.NotNull;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarHelper;
 
 /**
  * Abstract {@link TaskProcessCommandDecorator} to add Sonar Server settings to a command
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
-public abstract class AbstractSonarExtraProjectConfigurationCommandDecorator implements TaskProcessCommandDecorator {
+public abstract class AbstractSonarExtraProjectConfigurationCommandDecorator extends
+		AbstractSonarConfigurationCommandDecorator {
 
 	/**
 	 * {@inheritDoc}
@@ -44,7 +44,13 @@ public abstract class AbstractSonarExtraProjectConfigurationCommandDecorator imp
 	public void addSonarExtraProjectProperties(@NotNull TaskContext taskContext, @NotNull List<String> command) {
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_LANGUAGE))) {
-			SonarHelper.addPropertyToCommand(command, "sonar.language", configuration.get(CFG_SONAR_LANGUAGE));
+			addPropertyToCommand(command, "sonar.language", configuration.get(CFG_SONAR_LANGUAGE));
+		}
+		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JAVA_SOURCE))) {
+			addPropertyToCommand(command, "sonar.java.source", configuration.get(CFG_SONAR_JAVA_SOURCE));
+		}
+		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JAVA_TARGET))) {
+			addPropertyToCommand(command, "sonar.java.target", configuration.get(CFG_SONAR_JAVA_TARGET));
 		}
 	}
 

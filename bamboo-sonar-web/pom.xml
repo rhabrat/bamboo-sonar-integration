@@ -54,6 +54,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>bamboo-sonar-tasks</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.marvelution.gadgets</groupId>
 			<artifactId>sonar-gadgets</artifactId>
 			<version>${sonar.gadgets.version}</version>

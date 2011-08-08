@@ -29,31 +29,30 @@ import org.jetbrains.annotations.NotNull;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarHelper;
 
 /**
  * Abstract {@link TaskProcessCommandDecorator} to add Sonar Server settings to a command
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
-public abstract class AbstractSonarServerConfigurationCommandDecorator implements TaskProcessCommandDecorator {
+public abstract class AbstractSonarServerConfigurationCommandDecorator extends
+		AbstractSonarConfigurationCommandDecorator {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void addSonarServerProperties(@NotNull TaskContext taskContext, @NotNull List<String> command) {
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
-		SonarHelper.addPropertyToCommand(command, "sonar.host.url", configuration.get(CFG_SONAR_HOST_URL));
-		SonarHelper.addPropertyToCommand(command, "sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
-		SonarHelper.addPropertyToCommand(command, "sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
+		addPropertyToCommand(command, "sonar.host.url", configuration.get(CFG_SONAR_HOST_URL));
+		addPropertyToCommand(command, "sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
+		addPropertyToCommand(command, "sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
 		// Sonar JDBC URL is optional
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_URL))) {
-			SonarHelper.addPropertyToCommand(command, "sonar.jdbc.url", configuration.get(CFG_SONAR_JDBC_URL));
+			addPropertyToCommand(command, "sonar.jdbc.url", configuration.get(CFG_SONAR_JDBC_URL));
 		}
 		// Sonar JDBC Driver is optional
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_DRIVER))) {
-			SonarHelper.addPropertyToCommand(command, "sonar.jdbc.dirverClassName",
-				configuration.get(CFG_SONAR_JDBC_DRIVER));
+			addPropertyToCommand(command, "sonar.jdbc.driverClassName", configuration.get(CFG_SONAR_JDBC_DRIVER));
 		}
 	}
 

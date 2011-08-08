@@ -20,12 +20,10 @@
 package com.marvelution.bamboo.plugins.sonar.tasks.configuration;
 
 import com.atlassian.bamboo.collections.ActionParametersMap;
-import com.atlassian.bamboo.plugins.maven.task.AbstractMavenConfig;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -41,29 +39,6 @@ import java.util.Map;
  */
 public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator {
 
-	/**
-	 * Maven specific configuration options
-	 */
-	public static final String CFG_SONAR_JDBC_PROFILE = "sonarJdbcProfile";
-	public static final String CFG_SONAR_JDBC_OPTION = "sonarJdbcOption";
-	public static final String CFG_SONAR_JDBC_USE_PROFILE = "sonarJdbcUseProfile";
-	public static final String CFG_SONAR_JDBC_USE_FORM = "sonarJdbcUseForm";
-
-	/**
-	 * Sonar plugin groupId, artifactId and goal. The version comes from the sub-implementation
-	 */
-	private static final String SONAR_PLUGIN_GROUPID = "org.codehaus.mojo";
-	private static final String SONAR_PLUGIN_ARTIFACTID = "sonar-maven-plugin";
-	private static final String SONAR_PLUGIN_GOAL = "sonar";
-	private static final String CTX_SONAR_PLUGIN_PREINSTALLED = "sonarPluginPreInstalled";
-
-	private static final String CTX_SONAR_JDBC_OPTIONS = "sonarJdbcOptions";
-	private static final Map<String, String> CFG_SONAR_JDBC_OPTIONS = ImmutableMap.of(
-		CFG_SONAR_JDBC_USE_FORM, "Specify the configuration below.",
-		CFG_SONAR_JDBC_USE_PROFILE, "Get configuration from a Maven Profile."
-	);
-
-	private static final String CFG_GOALS = AbstractMavenConfig.CFG_GOALS;
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_GOALS, CFG_SONAR_JDBC_PROFILE,
 		CFG_SONAR_JDBC_OPTION, CTX_SONAR_PLUGIN_PREINSTALLED);
 
@@ -110,7 +85,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 	public void populateContextForView(@NotNull Map<String, Object> context, @NotNull TaskDefinition taskDefinition) {
 		super.populateContextForView(context, taskDefinition);
 		taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
-		context.put("usesProfile",
+		context.put(CTX_USES_PROFILE,
 			CFG_SONAR_JDBC_USE_PROFILE.equals(taskDefinition.getConfiguration().get(CFG_SONAR_JDBC_OPTION)));
 	}
 

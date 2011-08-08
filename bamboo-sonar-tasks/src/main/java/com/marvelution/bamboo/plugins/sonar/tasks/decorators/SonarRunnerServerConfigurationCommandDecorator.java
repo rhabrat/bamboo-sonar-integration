@@ -58,4 +58,12 @@ public class SonarRunnerServerConfigurationCommandDecorator extends AbstractSona
 		return decoratedCommand;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getPropertyPattern() {
+		return "-D %s=%s";
+	}
+
 }

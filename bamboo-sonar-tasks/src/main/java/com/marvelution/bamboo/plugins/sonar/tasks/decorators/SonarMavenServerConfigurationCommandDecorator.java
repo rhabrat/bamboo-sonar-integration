@@ -62,4 +62,12 @@ public class SonarMavenServerConfigurationCommandDecorator extends AbstractSonar
 		return decoratedCommand;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getPropertyPattern() {
+		return "-D%s=%s";
+	}
+
 }

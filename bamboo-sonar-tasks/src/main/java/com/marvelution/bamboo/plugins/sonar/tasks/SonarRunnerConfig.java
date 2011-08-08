@@ -63,8 +63,8 @@ public class SonarRunnerConfig {
 	 */
 	public SonarRunnerConfig(TaskContext taskContext, CapabilityContext capabilityContext,
 			EnvironmentVariableAccessor environmentVariableAccessor) {
-		builderLabel = ((String) Preconditions.checkNotNull(
-			taskContext.getConfigurationMap().get("label"), "Builder label is not defined"));
+		builderLabel = ((String) Preconditions.checkNotNull(taskContext.getConfigurationMap().get("label"),
+			"Builder label is not defined"));
 		builderPath = ((String) Preconditions.checkNotNull(capabilityContext.getCapabilityValue(
 			SONAR_RUNNER_PREFIX + "." + builderLabel), "Builder path is not defined"));
 		environmentVariables = ((String)taskContext.getConfigurationMap().get("environmentVariables"));

@@ -19,6 +19,11 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import static com.atlassian.bamboo.task.TaskConfigConstants.CFG_PROJECT_FILENAME;
+
+import java.io.File;
+import java.io.FileReader;
+
 import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.build.logger.interceptors.ErrorMemorisingInterceptor;
 import com.atlassian.bamboo.build.logger.interceptors.LogMemorisingInterceptor;
@@ -37,6 +42,12 @@ import com.atlassian.bamboo.utils.SystemProperty;
 import com.atlassian.bamboo.v2.build.CurrentBuildResult;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.utils.process.ExternalProcess;
+import com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -102,9 +113,16 @@ public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractMavenCo
 				TaskResultBuilder taskResultBuilder =
 					TaskResultBuilder.create(taskContext).checkReturnCode(externalProcess)
 						.checkInterceptorMatches(buildSuccessMatcher, FIND_SUCCESS_MESSAGE_IN_LAST);
-				return taskResultBuilder.build();
+				TaskResult result = taskResultBuilder.build();
+				Model pom = getProjectObjectModel(getProjectFile(taskContext));
+				if (pom != null) {
+					final String projectKey = String.format("%s:%s", pom.getGroupId(), pom.getArtifactId());
+					result.getResultData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY, projectKey);
+				} else{
+					getLogger().warn("Failed to get the Project Key from the Maven Project Object Model");
+				}
+				return result;
 			}
-
 			throw new TaskException("Failed to execute sonar command, external process not completed?");
 		} catch (Exception e) {
 			throw new TaskException("Failed to execute sonar task", e);
@@ -115,10 +133,48 @@ public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractMavenCo
 	}
 
 	/**
+	 * Get the Maven project file for the given {@link TaskContext}
+	 * 
+	 * @param taskContext the {@link TaskContext} to use to get the project file
+	 * @return the project {@link File}
+	 */
+	private File getProjectFile(TaskContext taskContext) {
+		if (StringUtils.isNotBlank(taskContext.getConfigurationMap().get(CFG_PROJECT_FILENAME))) {
+			return new File(taskContext.getWorkingDirectory(),
+				taskContext.getConfigurationMap().get(CFG_PROJECT_FILENAME));
+		} else {
+			return new File(taskContext.getWorkingDirectory(), SonarConfigConstants.MAVEN_PROJECT_FILE);
+		}
+	}
+
+	/**
+	 * Get the Apache Maven {@link Model} for a given project {@link File}
+	 * 
+	 * @param projectFile the project {@link File} to get the {@link Model} from
+	 * @return the {@link Model} read from the project {@link File}, can be <code>null</code> if exceptions occur
+	 */
+	private Model getProjectObjectModel(File projectFile) {
+		MavenXpp3Reader reader = new MavenXpp3Reader();
+		try {
+			return reader.read(new FileReader(projectFile));
+		} catch (Exception e) {
+			getLogger().warn("Failed to read the Maven Model from file: " + projectFile.getAbsolutePath(), e);
+			return null;
+		}
+	}
+
+	/**
 	 * Getter for the Maven Configuration used to execute the Sonar Analysis
 	 * 
 	 * @return the Maven Configuration
 	 */
 	protected abstract CONFIG getMavenConfiguration(TaskContext taskContext);
+
+	/**
+	 * Get the {@link Logger} from the sub class
+	 * 
+	 * @return the {@link Logger}
+	 */
+	protected abstract Logger getLogger();
 
 }

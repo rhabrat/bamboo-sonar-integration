@@ -34,8 +34,6 @@ import java.util.Set;
  */
 public class SonarMaven2BuildTaskConfigurator extends AbstractSonarMavenBuildTaskConfigurator {
 
-	public static final String SONAR_PLUGIN_VERSION = "1.0-beta-2";
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -53,7 +51,7 @@ public class SonarMaven2BuildTaskConfigurator extends AbstractSonarMavenBuildTas
 	 */
 	@Override
 	protected String getSonarMavenPluginVersion() {
-		return SONAR_PLUGIN_VERSION;
+		return SONAR_M2_PLUGIN_VERSION;
 	}
 
 }

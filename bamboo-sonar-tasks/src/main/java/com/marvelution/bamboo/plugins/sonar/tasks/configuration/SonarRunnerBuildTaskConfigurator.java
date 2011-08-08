@@ -40,19 +40,8 @@ import com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerCapabilityDefaultsH
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
-public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator {
-
-	public static final String CFG_SONAR_SERVER_CONFIGURED = "serverConfigured";
-	public static final String CFG_SONAR_PROJECT_CONFIGURED = "projectConfigured";
-
-	public static final String CFG_SONAR_PROJECT_KEY = "sonarProjectKey";
-	public static final String CFG_SONAR_PROJECT_NAME = "sonarProjectName";
-	public static final String CFG_SONAR_PROJECT_VERSION = "sonarProjectVersion";
-
-	public static final String CFG_SONAR_SOURCES = "sonarSources";
-	public static final String CFG_SONAR_TESTS = "sonarTests";
-	public static final String CFG_SONAR_BINARIES = "sonarBinaries";
-	public static final String CFG_SONAR_LIBRARIES = "sonarLibraries";
+public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator implements
+		SonarConfigConstants {
 
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_PROJECT_KEY,
 		CFG_SONAR_PROJECT_NAME, CFG_SONAR_PROJECT_VERSION, CFG_SONAR_SOURCES, CFG_SONAR_TESTS, CFG_SONAR_BINARIES,
@@ -106,7 +95,7 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 			}
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_SOURCES))) {
 				errorCollection.addError(CFG_SONAR_SOURCES, textProvider.getText("sonar.sources.mandatory"));
-			} else if (StringUtils.split(params.getString(CFG_SONAR_SOURCES), ',').length < 1) {
+			} else if (StringUtils.split(params.getString(CFG_SONAR_SOURCES), DIRECTORY_SEPARATOR).length < 1) {
 				errorCollection.addError(CFG_SONAR_SOURCES, textProvider.getText("sonar.sources.mandatory"));
 			}
 		}

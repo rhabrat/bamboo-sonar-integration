@@ -19,6 +19,13 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarRunnerBuildTaskConfigurator.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.build.logger.interceptors.ErrorMemorisingInterceptor;
 import com.atlassian.bamboo.build.logger.interceptors.LogMemorisingInterceptor;
@@ -35,7 +42,10 @@ import com.atlassian.bamboo.utils.SystemProperty;
 import com.atlassian.bamboo.v2.build.CurrentBuildResult;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.utils.process.ExternalProcess;
+import com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SonarRunnerBuildTask implements TaskType {
 
+	private static final Logger LOGGER = Logger.getLogger(SonarRunnerBuildTask.class);
 	private static final String BUILD_SUCCESSFUL_MARKER = "ANALYSIS SUCCESSFUL";
 	private static final boolean SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE =
 		SystemProperty.SEARCH_BUILD_SUCCESS_FAIL_MESSAGE_EVERYWHERE.getValue(false);
@@ -97,7 +108,30 @@ public class SonarRunnerBuildTask implements TaskType {
 				TaskResultBuilder taskResultBuilder =
 					TaskResultBuilder.create(taskContext).checkReturnCode(externalProcess)
 						.checkInterceptorMatches(buildSuccessMatcher, FIND_SUCCESS_MESSAGE_IN_LAST);
-				return taskResultBuilder.build();
+				TaskResult result = taskResultBuilder.build();
+				String projectKey = null;
+				if (!taskContext.getConfigurationMap().getAsBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
+					// We have a projectKey in the configuration
+					projectKey = taskContext.getConfigurationMap().get(CFG_SONAR_PROJECT_KEY);
+				} else {
+					// Get it from the sonar-project.properties file
+					InputStream input = null;
+					File sonarProjectFile = new File(config.getWorkingDirectory(), "sonar-project.properties");
+					try {
+						Properties projectPrperties = new Properties();
+						input = new FileInputStream(sonarProjectFile);
+						projectPrperties.load(input);
+						projectKey = projectPrperties.getProperty(CFG_SONAR_PROJECT_KEY);
+					} catch (Exception e) {
+						LOGGER.warn("Failed to get the Project Key from the sonar-project.properties file.", e);
+					} finally {
+						IOUtils.closeQuietly(input);
+					}
+				}
+				if (projectKey != null) {
+					result.getResultData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY, projectKey);
+				}
+				return result;
 			}
 
 			throw new TaskException("Failed to execute sonar command, external process not completed?");

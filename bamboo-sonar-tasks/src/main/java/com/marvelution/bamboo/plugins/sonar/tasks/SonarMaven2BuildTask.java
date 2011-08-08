@@ -19,6 +19,8 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import org.apache.log4j.Logger;
+
 import com.atlassian.bamboo.plugins.maven.task.Maven2Config;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
@@ -31,6 +33,8 @@ import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 public class SonarMaven2BuildTask extends AbstractSonarMavenBuildTask<Maven2Config> {
+
+	private static final Logger LOGGER = Logger.getLogger(SonarMaven2BuildTask.class);
 
 	/**
 	 * Default Constructor
@@ -50,6 +54,14 @@ public class SonarMaven2BuildTask extends AbstractSonarMavenBuildTask<Maven2Conf
 	@Override
 	protected Maven2Config getMavenConfiguration(TaskContext taskContext) {
 		return new Maven2Config(taskContext, capabilityContext, environmentVariableAccessor);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Logger getLogger() {
+		return LOGGER;
 	}
 
 }
