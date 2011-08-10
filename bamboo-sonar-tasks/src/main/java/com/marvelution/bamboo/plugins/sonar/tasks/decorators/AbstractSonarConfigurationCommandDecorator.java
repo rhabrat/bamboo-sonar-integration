@@ -20,11 +20,14 @@
 package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
+import com.google.common.collect.Lists;
 
 /**
  * Abstract {@link TaskProcessCommandDecorator} implementation to add properties to the command
@@ -34,24 +37,34 @@ import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
 public abstract class AbstractSonarConfigurationCommandDecorator implements TaskProcessCommandDecorator {
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@NotNull
+	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
+		List<String> decoratedCommand = Lists.newArrayList(command);
+		Map<String, String> properties = getCommandProperties(taskContext);
+		for (Entry<String, String> property : properties.entrySet()) {
+			addPropertyToCommand(decoratedCommand, property.getKey(), property.getValue());
+		}
+		return decoratedCommand;
+	}
+
+	/**
+	 * Internal method to get all the command properties in a key/value {@link Map}
+	 * 
+	 * @param taskContext the {@link TaskContext} to get the proeprties from
+	 * @return the {@link Map} of properties
+	 */
+	protected abstract Map<String, String> getCommandProperties(@NotNull TaskContext taskContext);
+
+	/**
 	 * Internal method to add a Property to the Task Command
 	 * 
 	 * @param command the current command {@link List} to add the property to
 	 * @param key the property key
 	 * @param value the property value
 	 */
-	protected void addPropertyToCommand(@NotNull List<String> command, @NotNull String key, String value) {
-		if (StringUtils.isBlank(value)) {
-			value = String.valueOf(Boolean.TRUE);
-		}
-		command.add(1, String.format(getPropertyPattern(), new Object[] { key, value }));
-	}
-
-	/**
-	 * Get the property {@link String#format(String, Object...)} pattern
-	 * 
-	 * @return the String property pattern
-	 */
-	protected abstract String getPropertyPattern();
+	protected abstract void addPropertyToCommand(@NotNull List<String> command, @NotNull String key, String value);
 
 }

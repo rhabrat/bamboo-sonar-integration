@@ -27,13 +27,15 @@
     [/@ww.param]
 [/@ww.label]
 
+[@ww.label labelKey='sonar.host.url' name='sonarHostUrl' /]
+[@ww.label labelKey='sonar.host.username' name='sonarHostUsername' hideOnNull='true' /]
+[@ww.label labelKey='sonar.host.password' name='sonarFakePassword' hideOnNull='true' /]
 [#if usesProfile ]
 	[@ww.label labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' /]
 [#else]
-	[@ww.label labelKey='sonar.host.url' name='sonarHostUrl' /]
 	[@ww.label labelKey='sonar.jdbc.url' name='sonarJdbcUrl' /]
 	[@ww.label labelKey='sonar.jdbc.username' name='sonarJdbcUsername' /]
-	[@ww.label labelKey='sonar.jdbc.password' name='sonarJdbcPasswd' /]
+	[@ww.label labelKey='sonar.jdbc.password' name='sonarFakePassword' /]
 	[@ww.label labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' /]
 [/#if]
 

@@ -22,13 +22,13 @@ package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarRunnerBuildTaskConfigurator.*;
 
 import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarRunnerHelper;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Server properties to the Sonar Runner command if needed.
@@ -48,22 +48,21 @@ public class SonarRunnerServerConfigurationCommandDecorator extends AbstractSona
 	 * {@inheritDoc}
 	 */
 	@Override
-	@NotNull
-	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
-		List<String> decoratedCommand = Lists.newArrayList(command);
-		final ConfigurationMap configuration = taskContext.getConfigurationMap();
-		if (!configuration.getAsBoolean(CFG_SONAR_SERVER_CONFIGURED)) {
-			addSonarServerProperties(taskContext, decoratedCommand);
-		}
-		return decoratedCommand;
+	protected void addPropertyToCommand(List<String> command, String key, String value) {
+		SonarRunnerHelper.addPropertyToCommand(command, key, value);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPropertyPattern() {
-		return "-D %s=%s";
+	protected Map<String, String> getCommandProperties(TaskContext taskContext) {
+		Map<String, String> properties = Maps.newHashMap();
+		final ConfigurationMap configuration = taskContext.getConfigurationMap();
+		if (!configuration.getAsBoolean(CFG_SONAR_SERVER_CONFIGURED)) {
+			properties.putAll(addSonarServerProperties(taskContext));
+		}
+		return properties;
 	}
 
 }

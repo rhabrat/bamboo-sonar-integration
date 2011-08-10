@@ -22,13 +22,15 @@ package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.AbstractSonarMavenBuildTaskConfigurator.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
+import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Server properties to the Maven command if needed.
@@ -51,13 +53,11 @@ public class SonarMavenServerConfigurationCommandDecorator extends AbstractSonar
 	@Override
 	@NotNull
 	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
-		List<String> decoratedCommand = Lists.newArrayList(command);
+		List<String> decoratedCommand = super.decorate(taskContext, command);
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
 		if (CFG_SONAR_JDBC_USE_PROFILE.equals(configuration.get(CFG_SONAR_JDBC_OPTION))) {
 			// A Profile is configured. Make sure it is active
 			decoratedCommand.add(1, String.format("-P %s", configuration.get(CFG_SONAR_JDBC_PROFILE)));
-		} else {
-			addSonarServerProperties(taskContext, decoratedCommand);
 		}
 		return decoratedCommand;
 	}
@@ -66,8 +66,21 @@ public class SonarMavenServerConfigurationCommandDecorator extends AbstractSonar
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPropertyPattern() {
-		return "-D%s=%s";
+	protected void addPropertyToCommand(List<String> command, String key, String value) {
+		MavenHelper.addPropertyToCommand(command, key, value);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Map<String, String> getCommandProperties(TaskContext taskContext) {
+		Map<String, String> properties = Maps.newHashMap();
+		final ConfigurationMap configuration = taskContext.getConfigurationMap();
+		if (!CFG_SONAR_JDBC_USE_PROFILE.equals(configuration.get(CFG_SONAR_JDBC_OPTION))) {
+			properties.putAll(addSonarServerProperties(taskContext));
+		}
+		return properties;
 	}
 
 }

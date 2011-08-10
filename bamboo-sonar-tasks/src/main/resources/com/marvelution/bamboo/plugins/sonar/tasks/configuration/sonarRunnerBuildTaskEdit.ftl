@@ -31,6 +31,11 @@
 
 [@ww.textfield labelKey='builder.common.env' name='environmentVariables' cssClass="long-field" /]
 
+[@ui.bambooSection titleKey='sonar.host.configuration']
+	[@ww.textfield labelKey='sonar.host.url' name='sonarHostUrl' required='true' cssClass="long-field" /]
+	[@ww.textfield labelKey='sonar.host.username' name='sonarHostUsername' cssClass="long-field" /]
+	[@ww.password labelKey='sonar.host.password' name='sonarHostPassword' cssClass="long-field" /]
+[/@ui.bambooSection]
 [@ww.checkbox labelKey='sonar.runner.project.setup' name='projectConfigured' toggle='true'/]
 [@ww.checkbox labelKey='sonar.runner.server.setup' name='serverConfigured' toggle='true'/]
 [@ui.bambooSection titleKey='sonar.project.configuration' dependsOn='projectConfigured' showOn='false']
@@ -44,7 +49,6 @@
 	[#include "commonSonarBuildTaskEdit.ftl"]
 [/@ui.bambooSection]
 [@ui.bambooSection titleKey='sonar.server.configuration' dependsOn='serverConfigured' showOn='false']
-	[@ww.textfield labelKey='sonar.host.url' name='sonarHostUrl' required='true' cssClass="long-field" /]
 	[@ui.bambooSection titleKey='sonar.jdbc.configuration']
 		[@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
 		[@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]

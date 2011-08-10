@@ -109,10 +109,11 @@ public class SonarRunnerBuildTask implements TaskType {
 					TaskResultBuilder.create(taskContext).checkReturnCode(externalProcess)
 						.checkInterceptorMatches(buildSuccessMatcher, FIND_SUCCESS_MESSAGE_IN_LAST);
 				TaskResult result = taskResultBuilder.build();
-				String projectKey = null;
+				String projectKey = null, projectName = null;
 				if (!taskContext.getConfigurationMap().getAsBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
-					// We have a projectKey in the configuration
+					// We have a projectKey and projectName in the configuration
 					projectKey = taskContext.getConfigurationMap().get(CFG_SONAR_PROJECT_KEY);
+					projectName = taskContext.getConfigurationMap().get(CFG_SONAR_PROJECT_NAME);
 				} else {
 					// Get it from the sonar-project.properties file
 					InputStream input = null;
@@ -122,14 +123,22 @@ public class SonarRunnerBuildTask implements TaskType {
 						input = new FileInputStream(sonarProjectFile);
 						projectPrperties.load(input);
 						projectKey = projectPrperties.getProperty(CFG_SONAR_PROJECT_KEY);
+						projectName = projectPrperties.getProperty(CFG_SONAR_PROJECT_NAME);
 					} catch (Exception e) {
-						LOGGER.warn("Failed to get the Project Key from the sonar-project.properties file.", e);
+						LOGGER.warn("Failed to get the Project Key and Name from the sonar-project.properties file.");
 					} finally {
 						IOUtils.closeQuietly(input);
 					}
 				}
 				if (projectKey != null) {
-					result.getResultData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY, projectKey);
+					LOGGER.info("Setting the projectKey '" + projectKey + "' in the Build Results");
+					currentBuildResult.getCustomBuildData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY,
+						projectKey);
+				}
+				if (projectName != null) {
+					LOGGER.info("Setting the projectName '" + projectName + "' in the Build Results");
+					currentBuildResult.getCustomBuildData().put(SonarConfigConstants.TRD_SONAR_PROJECT_NAME,
+						projectName);
 				}
 				return result;
 			}

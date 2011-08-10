@@ -28,7 +28,7 @@
 	<artifactId>bamboo-sonar</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Bamboo Sonar Integration Distribution</name>
+	<name>Bamboo Sonar Integration :: Distribution Package</name>
 	<description>Distribution package for the Bamboo Sonar Integration project</description>
 	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.version}</url>
 	<inceptionYear>2011</inceptionYear>

@@ -82,4 +82,9 @@
 		<decoratedTaskType key="task.builder.sonar" />
 	</taskProcessCommandDecorator>
 
+	<!-- W E B   S E C T I O N S -->
+	<web-section key="sonar" name="Sonar" location="system.admin" weight="75">
+		<label key="websections.system.admin.sonar"/>
+	</web-section>
+
 </atlassian-plugin>

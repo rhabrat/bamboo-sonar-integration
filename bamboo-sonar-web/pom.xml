@@ -28,7 +28,7 @@
 	<artifactId>bamboo-sonar-web</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Bamboo Sonar Web</name>
+	<name>Bamboo Sonar Integration :: Web Module</name>
 	<description>Set of Web UI related items to integrate the Sonar Analysis results within Atlassian Bamboo</description>
 	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.parent.version}/${project.artifactId}</url>
 
@@ -40,7 +40,7 @@
 
 	<properties>
 		<sonar.gadgets.version>1.4.0-SNAPSHOT</sonar.gadgets.version>
-		<atlassian.plugin.name>${project.name}</atlassian.plugin.name>
+		<atlassian.plugin.name>Marvelution Bamboo Sonar Web Plugin</atlassian.plugin.name>
 		<atlassian.plugin.key>${atlassian.plugin.key.base}.web</atlassian.plugin.key>
 		<sonar.gadgets.directory>${project.build.directory}/generated-resources/sonar-gadgets</sonar.gadgets.directory>
 	</properties>
@@ -97,6 +97,7 @@
 				<excludes>
 					<exclude>atlassian-plugin.xml</exclude>
 					<exclude>gadgets/*.xml</exclude>
+					<exclude>**/plugin.properties</exclude>
 				</excludes>
 			</resource>
 			<resource>

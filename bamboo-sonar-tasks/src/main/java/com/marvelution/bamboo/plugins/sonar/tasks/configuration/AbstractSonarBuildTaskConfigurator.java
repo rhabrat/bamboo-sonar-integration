@@ -48,9 +48,9 @@ import com.opensymphony.xwork.TextProvider;
 public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskConfigurator implements
 		TaskRequirementSupport, SonarConfigConstants {
 
-	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_HOST_URL, CFG_SONAR_JDBC_URL,
-		CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD, CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE,
-		CFG_SONAR_JAVA_SOURCE, CFG_SONAR_JAVA_TARGET);
+	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_HOST_URL, CFG_SONAR_HOST_USERNAME,
+		CFG_SONAR_HOST_PASSWORD, CFG_SONAR_JDBC_URL, CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD,
+		CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE, CFG_SONAR_JAVA_SOURCE, CFG_SONAR_JAVA_TARGET);
 
 	protected TextProvider textProvider;
 	protected UIConfigBean uiConfigBean;
@@ -72,6 +72,12 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 		taskConfiguratorHelper.validateBuilderLabel(params, errorCollection);
 		taskConfiguratorHelper.validateJdk(params, errorCollection);
+		if (StringUtils.isBlank(params.getString(CFG_SONAR_HOST_URL))) {
+			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.mandatory"));
+		} else if (!params.getString(CFG_SONAR_HOST_URL).startsWith("http://")
+			&& !params.getString(CFG_SONAR_HOST_URL).startsWith("https://")) {
+			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.invalid"));
+		}
 	}
 
 	/**
@@ -81,12 +87,6 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	 * @param errorCollection the {@link ErrorCollection}
 	 */
 	protected void validateSonarServer(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
-		if (StringUtils.isBlank(params.getString(CFG_SONAR_HOST_URL))) {
-			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.mandatory"));
-		} else if (!params.getString(CFG_SONAR_HOST_URL).startsWith("http://")
-			&& !params.getString(CFG_SONAR_HOST_URL).startsWith("https://")) {
-			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.invalid"));
-		}
 		// TODO Validate the JDBC settings if non default
 	}
 

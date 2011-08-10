@@ -20,12 +20,12 @@
 package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 
 import java.util.List;
+import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-
+import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Project properties to the Sonar Maven command if needed.
@@ -47,21 +47,20 @@ public class SonarMavenProjectConfigurationCommandDecorator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	@NotNull
-	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
-		List<String> decoratedCommand = Lists.newArrayList(command);
-		// Make sure that the Enforcer plugin doesn't run during the Sonar run.
-		addPropertyToCommand(decoratedCommand, "enforcer.skip", "true");
-		addSonarExtraProjectProperties(taskContext, decoratedCommand);
-		return decoratedCommand;
+	protected void addPropertyToCommand(List<String> command, String key, String value) {
+		MavenHelper.addPropertyToCommand(command, key, value);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPropertyPattern() {
-		return "-D%s=%s";
+	protected Map<String, String> getCommandProperties(TaskContext taskContext) {
+		Map<String, String> properties = Maps.newHashMap();
+		// Make sure that the Enforcer plugin doesn't run during the Sonar run.
+		properties.put("enforcer.skip", "true");
+		properties.putAll(addSonarExtraProjectProperties(taskContext));
+		return properties;
 	}
 
 }

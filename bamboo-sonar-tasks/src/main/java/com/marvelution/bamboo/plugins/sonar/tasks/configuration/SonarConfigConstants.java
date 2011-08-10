@@ -36,8 +36,10 @@ public interface SonarConfigConstants {
 	 * Common Options
 	 */
 	String CFG_SONAR_HOST_URL = "sonarHostUrl";
+	String CFG_SONAR_HOST_USERNAME = "sonarHostUsername";
+	String CFG_SONAR_HOST_PASSWORD = "sonarHostPassword";
 
-	String CTX_SONAR_FAKE_PASSWORD = "sonarJdbcPasswd";
+	String CTX_SONAR_FAKE_PASSWORD = "sonarFakePassword";
 	String SONAR_FAKE_PASSWORD = "******";
 
 	/**
@@ -108,6 +110,7 @@ public interface SonarConfigConstants {
 	/**
 	 * Task Result Data key names
 	 */
-	String TRD_SONAR_PROJECT_KEY = "SONAR_PROJECT_KEY";
+	String TRD_SONAR_PROJECT_KEY = "com.marvelution.bamboo.plugins.sonar.task.project.key";
+	String TRD_SONAR_PROJECT_NAME = "com.marvelution.bamboo.plugins.sonar.task.project.name";
 
 }

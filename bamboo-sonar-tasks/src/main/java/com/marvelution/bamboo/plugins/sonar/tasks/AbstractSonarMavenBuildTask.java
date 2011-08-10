@@ -117,7 +117,12 @@ public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractMavenCo
 				Model pom = getProjectObjectModel(getProjectFile(taskContext));
 				if (pom != null) {
 					final String projectKey = String.format("%s:%s", pom.getGroupId(), pom.getArtifactId());
-					result.getResultData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY, projectKey);
+					getLogger().info("Setting the projectKey '" + projectKey + "' in the Build Results");
+					currentBuildResult.getCustomBuildData().put(SonarConfigConstants.TRD_SONAR_PROJECT_KEY,
+						projectKey);
+					getLogger().info("Setting the projectName '" + pom.getName() + "' in the Build Results");
+					currentBuildResult.getCustomBuildData().put(SonarConfigConstants.TRD_SONAR_PROJECT_NAME,
+						pom.getName());
 				} else{
 					getLogger().warn("Failed to get the Project Key from the Maven Project Object Model");
 				}

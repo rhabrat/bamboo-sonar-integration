@@ -19,17 +19,18 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 
-import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarRunnerBuildTaskConfigurator.*;
+import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarRunnerHelper;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Project properties to the Sonar Runner command if needed.
@@ -50,36 +51,34 @@ public class SonarRunnerProjectConfigurationCommandDecorator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	@NotNull
-	public List<String> decorate(@NotNull TaskContext taskContext, @NotNull List<String> command) {
-		List<String> decoratedCommand = Lists.newArrayList(command);
-		final ConfigurationMap configuration = taskContext.getConfigurationMap();
-		if (!configuration.getAsBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
-			addPropertyToCommand(decoratedCommand, "sonar.projectKey", configuration.get(CFG_SONAR_PROJECT_KEY));
-			addPropertyToCommand(decoratedCommand, "sonar.projectName", configuration.get(CFG_SONAR_PROJECT_NAME));
-			addPropertyToCommand(decoratedCommand, "sonar.projectVersion",
-				configuration.get(CFG_SONAR_PROJECT_VERSION));
-			addPropertyToCommand(decoratedCommand, "sources", configuration.get(CFG_SONAR_SOURCES));
-			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_TESTS))) {
-				addPropertyToCommand(decoratedCommand, "tests", configuration.get(CFG_SONAR_TESTS));
-			}
-			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_BINARIES))) {
-				addPropertyToCommand(decoratedCommand, "binaries", configuration.get(CFG_SONAR_BINARIES));
-			}
-			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_LIBRARIES))) {
-				addPropertyToCommand(decoratedCommand, "libraries", configuration.get(CFG_SONAR_LIBRARIES));
-			}
-		}
-		addSonarExtraProjectProperties(taskContext, decoratedCommand);
-		return decoratedCommand;
+	protected void addPropertyToCommand(List<String> command, String key, String value) {
+		SonarRunnerHelper.addPropertyToCommand(command, key, value);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getPropertyPattern() {
-		return "-D %s=%s";
+	protected Map<String, String> getCommandProperties(TaskContext taskContext) {
+		Map<String, String> properties = Maps.newHashMap();
+		final ConfigurationMap configuration = taskContext.getConfigurationMap();
+		if (!configuration.getAsBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
+			properties.put("sonar.projectKey", configuration.get(CFG_SONAR_PROJECT_KEY));
+			properties.put("sonar.projectName", configuration.get(CFG_SONAR_PROJECT_NAME));
+			properties.put("sonar.projectVersion", configuration.get(CFG_SONAR_PROJECT_VERSION));
+			properties.put("sources", configuration.get(CFG_SONAR_SOURCES));
+			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_TESTS))) {
+				properties.put("tests", configuration.get(CFG_SONAR_TESTS));
+			}
+			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_BINARIES))) {
+				properties.put("binaries", configuration.get(CFG_SONAR_BINARIES));
+			}
+			if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_LIBRARIES))) {
+				properties.put("libraries", configuration.get(CFG_SONAR_LIBRARIES));
+			}
+		}
+		properties.putAll(addSonarExtraProjectProperties(taskContext));
+		return properties;
 	}
 
 }

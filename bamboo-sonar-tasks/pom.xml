@@ -28,7 +28,7 @@
 	<artifactId>bamboo-sonar-tasks</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Bamboo Sonar Tasks</name>
+	<name>Bamboo Sonar Integration :: Tasks Module</name>
 	<description>Set of Sonar related tasks for Atlassian Bamboo</description>
 	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.parent.version}/${project.artifactId}</url>
 
@@ -39,7 +39,7 @@
 	</scm>
 
 	<properties>
-		<atlassian.plugin.name>${project.name}</atlassian.plugin.name>
+		<atlassian.plugin.name>Marvelution Bamboo Sonar Tasks Plugin</atlassian.plugin.name>
 		<atlassian.plugin.key>${atlassian.plugin.key.base}.tasks</atlassian.plugin.key>
 	</properties>
 
@@ -60,6 +60,7 @@
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>atlassian-plugin.xml</exclude>
+					<exclude>**/plugin.properties</exclude>
 				</excludes>
 			</resource>
 			<resource>
@@ -67,6 +68,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>atlassian-plugin.xml</include>
+					<include>**/plugin.properties</include>
 				</includes>
 			</resource>
 		</resources>
