@@ -135,7 +135,11 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 			Iterables.concat(TaskConfigConstants.DEFAULT_BUILDER_CONFIGURATION_KEYS, FIELDS_TO_COPY));
 		if (context.containsKey(CFG_SONAR_JDBC_PASSWORD)) {
 			// Add a fake password context variable to display the password
-			context.put(CTX_SONAR_FAKE_PASSWORD, SONAR_FAKE_PASSWORD);
+			context.put(CFG_SONAR_JDBC_PASSWORD, SONAR_FAKE_PASSWORD);
+		}
+		if (context.containsKey(CFG_SONAR_HOST_PASSWORD)) {
+			// Add a fake password context variable to display the password
+			context.put(CFG_SONAR_HOST_PASSWORD, SONAR_FAKE_PASSWORD);
 		}
 		// TODO Override JDBC settings if using defaults
 	}

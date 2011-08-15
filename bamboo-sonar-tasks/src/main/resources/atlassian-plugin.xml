@@ -87,4 +87,43 @@
 		<label key="websections.system.admin.sonar"/>
 	</web-section>
 
+	<!-- W E B   I T E M S -->
+	<web-item key="sonarBulkUpdate" name="Sonar Bulk Update" section="system.admin/sonar" weight="10">
+		<label key="webitems.system.admin.build.bulkAction"/>
+		<link linkId="sonarBulkAction">/admin/viewAvailableBulkAction.action</link>
+		<condition class="com.marvelution.bamboo.plugins.sonar.tasks.conditions.SonarBulkActionsConfiguredCondition" />
+	</web-item>
+
+	<!-- X W O R K   A C T I O N S -->
+	<xwork key="sonarBulkUpdateActions" name="Sonar Bulk Update Actions">
+		<package name="sonarBulkUpdate" extends="buildAdminEdit" namespace="/admin/sonar">
+			<action name="viewSonarHost" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarHost.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarHost.ftl</result>
+			</action>
+			<action name="viewUpdatedSonarHost" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
+				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarHost.ftl</result>
+			</action>
+			<action name="editSonarHost" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarHost.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarHost.ftl</result>
+			</action>
+			<action name="viewSonarJdbc" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarJdbc.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarJdbc.ftl</result>
+			</action>
+			<action name="viewUpdatedSonarJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
+				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarJdbc.ftl</result>
+			</action>
+			<action name="editSonarJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbc.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbc.ftl</result>
+			</action>
+			<action name="updateSonarTask" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.UpdateSonarBuildTaskConfiguration" method="performUpdate">
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
+			</action>
+		</package>
+	</xwork>
+
 </atlassian-plugin>

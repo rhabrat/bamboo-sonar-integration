@@ -26,16 +26,16 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import com.atlassian.bamboo.build.Buildable;
 import com.atlassian.bamboo.build.Job;
-import com.atlassian.bamboo.chains.Chain;
+import com.atlassian.bamboo.plan.Plan;
 import com.atlassian.bamboo.resultsummary.BuildResultsSummary;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.plugin.PluginParseException;
 import com.atlassian.plugin.web.ContextProvider;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.marvelution.bamboo.plugins.sonar.tasks.predicates.IsSonarTaskPredicate;
+import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarTaskUtils;
 import com.marvelution.bamboo.plugins.sonar.web.SonarConfiguration;
 
 /**
@@ -66,20 +66,8 @@ public class SonarConfigurationContextProvider implements ContextProvider {
 					+ entry.getValue().getClass().getName());
 			}
 		}
-		List<Job> jobs = Lists.newArrayList();
-		if (context.get("plan") instanceof Chain) {
-			for (Job job : ((Chain) context.get("plan")).getAllJobs()) {
-				if (Iterables.any(job.getBuildDefinition().getTaskDefinitions(), new IsSonarTaskPredicate())) {
-					jobs.add(job);
-				}
-			}
-		} else if (context.get("plan") instanceof Buildable) {
-			Job job = (Job) context.get("plan");
-			if (Iterables.any(job.getBuildDefinition().getTaskDefinitions(), new IsSonarTaskPredicate())) {
-				jobs.add(job);
-			}
-		}
-		context.put("sonarConfigurations", getSonarConfigurationFromJobs(jobs));
+		context.put("sonarConfigurations",
+			getSonarConfigurationFromJobs(SonarTaskUtils.getJobsWithSonarTasks((Plan) context.get("plan"))));
 		return context;
 	}
 
@@ -93,7 +81,7 @@ public class SonarConfigurationContextProvider implements ContextProvider {
 		List<SonarConfiguration> configs = Lists.newArrayList();
 		for (Job job : jobs) {
 			TaskDefinition taskDefinition = Iterables.find(job.getBuildDefinition().getTaskDefinitions(),
-				new IsSonarTaskPredicate(), null);
+				SonarPredicates.isSonarTask(), null);
 			if (taskDefinition != null) {
 				SonarConfiguration config = new SonarConfiguration();
 				// Copy the Sonar Host configuration form the task definition

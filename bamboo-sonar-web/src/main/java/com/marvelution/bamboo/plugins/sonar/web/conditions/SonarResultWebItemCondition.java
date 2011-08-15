@@ -32,7 +32,7 @@ import com.atlassian.plugin.PluginParseException;
 import com.atlassian.plugin.web.Condition;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.marvelution.bamboo.plugins.sonar.tasks.predicates.IsSonarTaskPredicate;
+import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
 
 /**
  * {@link Condition} implementation to specify when to display teh Sonar tab
@@ -59,7 +59,7 @@ public class SonarResultWebItemCondition implements Condition {
 		String key = StringUtils.defaultString((String) context.get("planKey"), (String) context.get("buildKey"));
 		if (StringUtils.isNotBlank(key)) {
 			for (Job job : getAllJobsByKey(key)) {
-				if (Iterables.any(job.getBuildDefinition().getTaskDefinitions(), new IsSonarTaskPredicate())) {
+				if (Iterables.any(job.getBuildDefinition().getTaskDefinitions(), SonarPredicates.isSonarTask())) {
 					return true;
 				}
 			}
