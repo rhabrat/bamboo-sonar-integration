@@ -112,6 +112,15 @@ public class SonarConfigurationHelper {
 		return getField(CFG_SONAR_JDBC_DRIVER);
 	}
 
+	/**
+	 * Get the JDBC Profile
+	 * 
+	 * @return the JDBC Profile
+	 */
+	public String getJdbcProfile() {
+		return getField(CFG_SONAR_JDBC_PROFILE);
+	}
+
 	private final String getField(String field) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Getting field " + field + " with value: " + taskDefinition.getConfiguration().get(field));

@@ -17,14 +17,13 @@
  ~ under the License.
  -->
 
-[#-- @ftlvariable name="action" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
-[#-- @ftlvariable name="" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
+[#-- @ftlvariable name="action" type="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" --]
+[#-- @ftlvariable name="" type="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" --]
 
-[@ui.bambooSection titleKey='sonar.jdbc.configuration']
-    [@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
-    [@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]
-    [@ww.password labelKey='sonar.jdbc.password' name='sonarJdbcPassword' cssClass="long-field" /]
-    [@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
-    [@ww.hidden name='sonarJdbcOption' value='sonarJdbcUseForm' /]
-    [@ww.hidden name='serverConfigured' value='false' /]
-[/@ui.bambooSection]
+[#list action.getTaskDefinitions() as taskDefinition]
+	[#if taskDefinition.getJdbcProfile()?has_content]
+		[@ww.label labelKey='sonar.jdbc.profile' value=taskDefinition.getJdbcProfile() /]
+	[#else]
+		[@ww.label labelKey='sonar.jdbc.profile' value='<i>[none specified]</i>' escape='false' /]
+	[/#if]
+[/#list]

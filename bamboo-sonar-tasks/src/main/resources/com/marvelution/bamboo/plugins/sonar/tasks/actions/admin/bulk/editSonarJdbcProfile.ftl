@@ -21,10 +21,6 @@
 [#-- @ftlvariable name="" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
 
 [@ui.bambooSection titleKey='sonar.jdbc.configuration']
-    [@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
-    [@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]
-    [@ww.password labelKey='sonar.jdbc.password' name='sonarJdbcPassword' cssClass="long-field" /]
-    [@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
-    [@ww.hidden name='sonarJdbcOption' value='sonarJdbcUseForm' /]
-    [@ww.hidden name='serverConfigured' value='false' /]
+    [@ww.textfield labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' required='true' cssClass="long-field" /]
+    [@ww.hidden name='sonarJdbcOption' value='sonarJdbcUseProfile' /]
 [/@ui.bambooSection]

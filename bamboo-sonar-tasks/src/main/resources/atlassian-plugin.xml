@@ -119,6 +119,17 @@
 				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbc.ftl</result>
 				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbc.ftl</result>
 			</action>
+			<action name="viewSonarJdbcProfile" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarJdbcProfile.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarJdbcProfile.ftl</result>
+			</action>
+			<action name="viewUpdatedSonarJdbcProfile" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
+				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarJdbcProfile.ftl</result>
+			</action>
+			<action name="editSonarJdbcProfile" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbcProfile.ftl</result>
+				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarJdbcProfile.ftl</result>
+			</action>
 			<action name="updateSonarTask" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.UpdateSonarBuildTaskConfiguration" method="performUpdate">
 				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
 				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
