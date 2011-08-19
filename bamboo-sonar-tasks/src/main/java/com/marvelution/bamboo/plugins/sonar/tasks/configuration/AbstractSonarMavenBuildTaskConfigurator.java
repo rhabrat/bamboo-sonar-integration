@@ -26,6 +26,7 @@ import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.ImmutableList;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,8 +40,9 @@ import java.util.Map;
  */
 public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator {
 
+	private static final Logger LOGGER = Logger.getLogger(AbstractSonarMavenBuildTaskConfigurator.class);
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_GOALS, CFG_SONAR_JDBC_PROFILE,
-		CFG_SONAR_JDBC_OPTION, CTX_SONAR_PLUGIN_PREINSTALLED);
+		CFG_SONAR_JDBC_OPTION, CFG_SONAR_PLUGIN_PREINSTALLED);
 
 	/**
 	 * {@inheritDoc}
@@ -51,7 +53,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 					@Nullable final TaskDefinition previousTaskDefinition) {
 		Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 		taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(config, params, FIELDS_TO_COPY);
-		if (params.getBoolean(CTX_SONAR_PLUGIN_PREINSTALLED)) {
+		if (params.getBoolean(CFG_SONAR_PLUGIN_PREINSTALLED)) {
 			config.put(CFG_GOALS, SONAR_PLUGIN_GOAL + ":" + SONAR_PLUGIN_GOAL);
 		} else {
 			config.put(CFG_GOALS, SONAR_PLUGIN_GROUPID + ":" + SONAR_PLUGIN_ARTIFACTID + ":"
@@ -104,13 +106,31 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 	@Override
 	public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 		super.validate(params, errorCollection);
+		validateSonarServer(params, errorCollection);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateSonarServer(ActionParametersMap params, ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar JDBC Properties");
 		if (CFG_SONAR_JDBC_USE_PROFILE.equals(params.getString(CFG_SONAR_JDBC_OPTION))) {
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_JDBC_PROFILE))) {
 				errorCollection.addError(CFG_SONAR_JDBC_PROFILE, textProvider.getText("sonar.jdbc.profile.mandatory"));
 			}
 		} else {
-			validateSonarServer(params, errorCollection);
+			super.validateSonarServer(params, errorCollection);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateSonarProject(ActionParametersMap params, ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar Project Properties");
+		// Not needed yet for this task
 	}
 
 	/**

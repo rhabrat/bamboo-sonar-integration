@@ -25,63 +25,42 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.atlassian.bamboo.collections.ActionParametersMap;
+import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.ww2.actions.admin.bulk.BulkAction;
+import com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarTaskConfigurator;
 
 /**
+ * Base {@link BulkAction} for the JDBC related actions
+ * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 @SuppressWarnings("unchecked")
-public class UpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
+public abstract class AbstractUpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(UpdateSonarJDBCBulkAction.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractUpdateSonarJDBCBulkAction.class);
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getKey() {
-		return "bulk.action.sonar.jdbc.update";
+	public void validateTaskConfiguration(SonarTaskConfigurator taskConfigurator, ActionParametersMap params,
+					ErrorCollection errorCollection) {
+		taskConfigurator.validateSonarServer(params, errorCollection);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getTitle() {
-		return getText("bulkAction.sonarJdbc.title");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getChangedItem() {
-		return getText("bulkAction.sonarJdbc.changeItem");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public WebWorkAction getViewAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewSonarJdbc");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public WebWorkAction getViewUpdatedAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewUpdatedSonarJdbc");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public WebWorkAction getEditSnippetAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "editSonarJdbc");
+	public Map<String, String> getTaskConfigurationMap(Map<String, String[]> params) {
+		Map<String, String> config = super.getTaskConfigurationMap(params);
+		config.put(CFG_SONAR_JDBC_URL, getNewUrl(params));
+		config.put(CFG_SONAR_JDBC_USERNAME, getNewUsername(params));
+		config.put(CFG_SONAR_JDBC_PASSWORD, getNewPassword(params));
+		config.put(CFG_SONAR_JDBC_DRIVER, getNewDriver(params));
+		return config;
 	}
 
 	/**
@@ -92,10 +71,10 @@ public class UpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
 	 */
 	public String getNewUrl(Map<String, String[]> params) {
 		if (params.get(CFG_SONAR_JDBC_URL) != null) {
-			LOGGER.debug("Found new Sonar JDBC URL");
+			LOGGER.debug("New " + CFG_SONAR_JDBC_URL + " is set");
 			return ((String[])params.get(CFG_SONAR_JDBC_URL))[0];
 		}
-		LOGGER.debug("New Sonar JDBC URL not found");
+		LOGGER.debug("New " + CFG_SONAR_JDBC_URL + " is not set");
 		return "";
 	}
 
@@ -107,10 +86,10 @@ public class UpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
 	 */
 	public String getNewDriver(Map<String, String[]> params) {
 		if (params.get(CFG_SONAR_JDBC_DRIVER) != null) {
-			LOGGER.debug("Found new Sonar JDBC Driver");
+			LOGGER.debug("New " + CFG_SONAR_JDBC_DRIVER + " is set");
 			return ((String[])params.get(CFG_SONAR_JDBC_DRIVER))[0];
 		}
-		LOGGER.debug("New Sonar JDBC Driver not found");
+		LOGGER.debug("New " + CFG_SONAR_JDBC_DRIVER + " is not set");
 		return "";
 	}
 
@@ -122,10 +101,10 @@ public class UpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
 	 */
 	public String getNewUsername(Map<String, String[]> params) {
 		if (params.get(CFG_SONAR_JDBC_USERNAME) != null) {
-			LOGGER.debug("Found new Sonar JDBC Username");
+			LOGGER.debug("New " + CFG_SONAR_JDBC_USERNAME + " is set");
 			return ((String[])params.get(CFG_SONAR_JDBC_USERNAME))[0];
 		}
-		LOGGER.debug("New Sonar JDBC Username not found");
+		LOGGER.debug("New " + CFG_SONAR_JDBC_USERNAME + " is not set");
 		return "";
 	}
 
@@ -137,10 +116,10 @@ public class UpdateSonarJDBCBulkAction extends AbstractSonarBulkAction {
 	 */
 	public String getNewPassword(Map<String, String[]> params) {
 		if (params.get(CFG_SONAR_JDBC_PASSWORD) != null) {
-			LOGGER.debug("Found new Sonar JDBC Password");
+			LOGGER.debug("New " + CFG_SONAR_JDBC_PASSWORD + " is set");
 			return ((String[])params.get(CFG_SONAR_JDBC_PASSWORD))[0];
 		}
-		LOGGER.debug("New Sonar JDBC Password not found");
+		LOGGER.debug("New " + CFG_SONAR_JDBC_PASSWORD + " is not set");
 		return "";
 	}
 

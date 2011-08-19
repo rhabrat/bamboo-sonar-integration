@@ -26,25 +26,30 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.atlassian.bamboo.collections.ActionParametersMap;
+import com.atlassian.bamboo.plan.Plan;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.ww2.actions.admin.bulk.BulkAction;
 import com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarTaskConfigurator;
+import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarTaskUtils;
 
 /**
+ * Bulk Action to update the Maven Pluin Pre Installed state
+ * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 @SuppressWarnings("unchecked")
-public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
+public class UpdateSonarMavenPluginBulkAction extends AbstractSonarBulkAction {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(UpdateSonarHostBulkAction.class);
+	private static final Logger LOGGER = Logger.getLogger(UpdateSonarMavenPluginBulkAction.class);
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String getKey() {
-		return "bulk.action.sonar.host.update";
+		return "bulk.action.sonar.maven.plugin.update";
 	}
 
 	/**
@@ -52,7 +57,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	 */
 	@Override
 	public String getTitle() {
-		return getText("bulkAction.sonarHost.title");
+		return getText("bulkAction.sonarMavenPlugin.title");
 	}
 
 	/**
@@ -60,7 +65,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	 */
 	@Override
 	public String getChangedItem() {
-		return getText("bulkAction.sonarHost.changeItem");
+		return getText("bulkAction.sonarMavenPlugin.changeItem");
 	}
 
 	/**
@@ -68,7 +73,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	 */
 	@Override
 	public WebWorkAction getViewAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewSonarHost");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewSonarMavenPlugin");
 	}
 
 	/**
@@ -76,7 +81,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	 */
 	@Override
 	public WebWorkAction getViewUpdatedAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewUpdatedSonarHost");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewUpdatedSonarMavenPlugin");
 	}
 
 	/**
@@ -84,7 +89,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	 */
 	@Override
 	public WebWorkAction getEditSnippetAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "editSonarHost");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "editSonarMavenPlugin");
 	}
 
 	/**
@@ -93,7 +98,7 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	@Override
 	public void validateTaskConfiguration(SonarTaskConfigurator taskConfigurator, ActionParametersMap params,
 					ErrorCollection errorCollection) {
-		taskConfigurator.validateSonarHost(params, errorCollection);
+		// No validation required
 	}
 
 	/**
@@ -102,55 +107,31 @@ public class UpdateSonarHostBulkAction extends AbstractSonarBulkAction {
 	@Override
 	public Map<String, String> getTaskConfigurationMap(Map<String, String[]> params) {
 		Map<String, String> config = super.getTaskConfigurationMap(params);
-		config.put(CFG_SONAR_HOST_URL, getNewUrl(params));
-		config.put(CFG_SONAR_HOST_USERNAME, getNewUsername(params));
-		config.put(CFG_SONAR_HOST_PASSWORD, getNewPassword(params));
+		config.put(CFG_SONAR_PLUGIN_PREINSTALLED, getNewPluginPreInstalled(params).toString());
 		return config;
 	}
 
 	/**
-	 * Get the new Sonar Host URL
+	 * Get the new Sonar Plugin Preinstalled
 	 * 
 	 * @param params the submitted parameters
-	 * @return the new host url, may be <code>empty</code>
+	 * @return the new Plugin Preinstalled, may be <code>empty</code>
 	 */
-	public String getNewUrl(Map<String, String[]> params) {
-		if (params.get(CFG_SONAR_HOST_URL) != null) {
-			LOGGER.debug("New " + CFG_SONAR_HOST_URL + " is set");
-			return ((String[])params.get(CFG_SONAR_HOST_URL))[0];
+	public Boolean getNewPluginPreInstalled(Map<String, String[]> params) {
+		if (params.get(CFG_SONAR_PLUGIN_PREINSTALLED) != null) {
+			LOGGER.debug("New " + CFG_SONAR_SERVER_CONFIGURED + " is set");
+			return Boolean.TRUE;
 		}
-		LOGGER.debug("New " + CFG_SONAR_HOST_URL + " is not set");
-		return "";
+		LOGGER.debug("New " + CFG_SONAR_SERVER_CONFIGURED + " is not set");
+		return Boolean.FALSE;
 	}
 
 	/**
-	 * Get the new Sonar Host username
-	 * 
-	 * @param params the submitted parameters
-	 * @return the new host username, may be <code>empty</code>
+	 * {@inheritDoc}
 	 */
-	public String getNewUsername(Map<String, String[]> params) {
-		if (params.get(CFG_SONAR_HOST_USERNAME) != null) {
-			LOGGER.debug("New " + CFG_SONAR_HOST_USERNAME + " is set");
-			return ((String[])params.get(CFG_SONAR_HOST_USERNAME))[0];
-		}
-		LOGGER.debug("New " + CFG_SONAR_HOST_USERNAME + " is not set");
-		return "";
-	}
-
-	/**
-	 * Get the new Sonar Host password
-	 * 
-	 * @param params the submitted parameters
-	 * @return the new host password, may be <code>empty</code>
-	 */
-	public String getNewPassword(Map<String, String[]> params) {
-		if (params.get(CFG_SONAR_HOST_PASSWORD) != null) {
-			LOGGER.debug("New " + CFG_SONAR_HOST_PASSWORD + " is set");
-			return ((String[])params.get(CFG_SONAR_HOST_PASSWORD))[0];
-		}
-		LOGGER.debug("New " + CFG_SONAR_HOST_PASSWORD + " is not set");
-		return "";
+	@Override
+	public boolean isApplicable(Plan plan) {
+		return SonarTaskUtils.hasSonarTasks(plan, SonarPredicates.isSonarMavenTask());
 	}
 
 }

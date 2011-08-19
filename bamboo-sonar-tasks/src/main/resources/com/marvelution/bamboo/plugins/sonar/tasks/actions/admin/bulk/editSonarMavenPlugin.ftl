@@ -20,4 +20,4 @@
 [#-- @ftlvariable name="action" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
 [#-- @ftlvariable name="" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
 
-[@ww.label labelKey='sonar.jdbc.profile' name='bulkAction.getNewProfile(params)' /]
+[@ww.checkbox labelKey='sonar.plugin.preinstalled' name='sonarPluginPreInstalled' /]

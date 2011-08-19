@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,7 @@ import com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerCapabilityDefaultsH
 public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator implements
 		SonarConfigConstants {
 
+	private static final Logger LOGGER = Logger.getLogger(SonarRunnerBuildTaskConfigurator.class);
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_PROJECT_KEY,
 		CFG_SONAR_PROJECT_NAME, CFG_SONAR_PROJECT_VERSION, CFG_SONAR_SOURCES, CFG_SONAR_TESTS, CFG_SONAR_BINARIES,
 		CFG_SONAR_LIBRARIES, CFG_SONAR_SERVER_CONFIGURED, CFG_SONAR_PROJECT_CONFIGURED);
@@ -77,9 +79,27 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 	@Override
 	public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 		super.validate(params, errorCollection);
+		validateSonarServer(params, errorCollection);
+		validateSonarProject(params, errorCollection);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateSonarServer(ActionParametersMap params, ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar JDBC Properties");
 		if (!params.getBoolean(CFG_SONAR_SERVER_CONFIGURED)) {
-			validateSonarServer(params, errorCollection);
+			super.validateSonarServer(params, errorCollection);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateSonarProject(ActionParametersMap params, ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar Project Properties");
 		if (!params.getBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_PROJECT_KEY))) {
 				errorCollection.addError(CFG_SONAR_PROJECT_KEY, textProvider.getText("sonar.project.key.mandatory"));
@@ -107,8 +127,8 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 	@Override
 	public void populateContextForCreate(Map<String, Object> context) {
 		super.populateContextForCreate(context);
-		context.put(CFG_SONAR_SERVER_CONFIGURED, String.valueOf(Boolean.FALSE));
-		context.put(CFG_SONAR_PROJECT_CONFIGURED, String.valueOf(Boolean.FALSE));
+		context.put(CFG_SONAR_SERVER_CONFIGURED, Boolean.FALSE.toString());
+		context.put(CFG_SONAR_PROJECT_CONFIGURED, Boolean.FALSE.toString());
 	}
 
 	/**
@@ -121,10 +141,10 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 		boolean serverConfig = Boolean.valueOf(taskDefinition.getConfiguration().get(CFG_SONAR_SERVER_CONFIGURED));
 		boolean projectConfig = Boolean.valueOf(taskDefinition.getConfiguration().get(CFG_SONAR_PROJECT_CONFIGURED));
 		if (!serverConfig) {
-			context.put(CFG_SONAR_SERVER_CONFIGURED, String.valueOf(Boolean.FALSE));
+			context.put(CFG_SONAR_SERVER_CONFIGURED, Boolean.FALSE.toString());
 		}
 		if (!projectConfig) {
-			context.put(CFG_SONAR_PROJECT_CONFIGURED, String.valueOf(Boolean.FALSE));
+			context.put(CFG_SONAR_PROJECT_CONFIGURED, Boolean.FALSE.toString());
 		}
 	}
 

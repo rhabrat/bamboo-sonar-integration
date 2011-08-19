@@ -33,6 +33,11 @@ import com.google.common.collect.ImmutableMap;
 public interface SonarConfigConstants {
 
 	/**
+	 * Bulk Action marker
+	 */
+	String BULK_ACTION_KEY = "selectedBulkActionKey";
+
+	/**
 	 * Common Options
 	 */
 	String CFG_SONAR_HOST_URL = "sonarHostUrl";
@@ -81,7 +86,7 @@ public interface SonarConfigConstants {
 	String SONAR_M2_PLUGIN_VERSION = "1.0-beta-2";
 	String SONAR_M3_PLUGIN_VERSION = "2.0-beta-2";
 	
-	String CTX_SONAR_PLUGIN_PREINSTALLED = "sonarPluginPreInstalled";
+	String CFG_SONAR_PLUGIN_PREINSTALLED = "sonarPluginPreInstalled";
 
 	String CTX_SONAR_JDBC_OPTIONS = "sonarJdbcOptions";
 	Map<String, String> CFG_SONAR_JDBC_OPTIONS = ImmutableMap.of(

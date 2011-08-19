@@ -113,6 +113,24 @@ public class SonarConfigurationHelper {
 	}
 
 	/**
+	 * Get the Server Configured field
+	 * 
+	 * @return the Server Configured field
+	 */
+	public Boolean getServerConfigured() {
+		return Boolean.valueOf(getField(CFG_SONAR_SERVER_CONFIGURED));
+	}
+
+	/**
+	 * Get the Sonar Plugin Pre Installed field
+	 * 
+	 * @return the Plugin Pre Installed field
+	 */
+	public Boolean getPluginPreInstalled() {
+		return Boolean.valueOf(getField(CFG_SONAR_PLUGIN_PREINSTALLED));
+	}
+
+	/**
 	 * Get the JDBC Profile
 	 * 
 	 * @return the JDBC Profile

@@ -19,17 +19,22 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.bulk;
 
+import java.util.Map;
+
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.plan.Plan;
 import com.atlassian.bamboo.ww2.BambooActionSupport;
 import com.atlassian.bamboo.ww2.actions.admin.bulk.BulkAction;
+import com.google.common.collect.Maps;
 import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarTaskUtils;
 
 /**
+ * Base {@link BulkAction} implementation for all Sonar Bulk Actions tasks
+ * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractSonarBulkAction extends BambooActionSupport implements BulkAction {
+public abstract class AbstractSonarBulkAction extends BambooActionSupport implements SonarBulkAction {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,6 +83,14 @@ public abstract class AbstractSonarBulkAction extends BambooActionSupport implem
 	@Override
 	public WebWorkAction getExecuteAction() {
 		return new BulkAction.WebWorkActionImpl("/admin/sonar", "updateSonarTask");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Map<String, String> getTaskConfigurationMap(Map<String, String[]> params) {
+		return Maps.newHashMap();
 	}
 
 }

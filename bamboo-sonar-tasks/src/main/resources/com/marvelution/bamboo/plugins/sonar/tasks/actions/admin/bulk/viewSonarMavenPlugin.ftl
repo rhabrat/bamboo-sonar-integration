@@ -21,9 +21,5 @@
 [#-- @ftlvariable name="" type="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" --]
 
 [#list action.getTaskDefinitions() as taskDefinition]
-	[#if taskDefinition.getJdbcProfile()?has_content]
-		[@ww.label labelKey='sonar.jdbc.profile' value=taskDefinition.getJdbcProfile() /]
-	[#else]
-		[@ww.label labelKey='sonar.jdbc.profile' value='<i>[none specified]</i>' escape='false' /]
-	[/#if]
+	[@ww.label labelKey='sonar.plugin.preinstalled' value=taskDefinition.getPluginPreInstalled()?string("Yes", "No") escape="false" /]
 [/#list]

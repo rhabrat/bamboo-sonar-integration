@@ -21,6 +21,17 @@
 [#-- @ftlvariable name="" type="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" --]
 
 [@ui.bambooSection titleKey='sonar.jdbc.configuration']
-    [@ww.textfield labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' required='true' cssClass="long-field" /]
-    [@ww.hidden name='sonarJdbcOption' value='sonarJdbcUseProfile' /]
+	[@ww.radio labelKey='sonar.jdbc.configuration.option' name='sonarJdbcOption'
+               listKey='key' listValue='value' toggle='true'
+               list=bulkAction.getJdbcOptions() ]
+    [/@ww.radio]
+    [@ui.bambooSection dependsOn='sonarJdbcOption' showOn='sonarJdbcUseProfile']
+        [@ww.textfield labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' required='true' cssClass="long-field" /]
+    [/@ui.bambooSection]
+    [@ui.bambooSection dependsOn='sonarJdbcOption' showOn='sonarJdbcUseForm']
+        [@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
+        [@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]
+        [@ww.password labelKey='sonar.jdbc.password' name='sonarJdbcPassword' cssClass="long-field" /]
+        [@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
+    [/@ui.bambooSection]
 [/@ui.bambooSection]

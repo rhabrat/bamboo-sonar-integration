@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +47,9 @@ import com.opensymphony.xwork.TextProvider;
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskConfigurator implements
-		TaskRequirementSupport, SonarConfigConstants {
+		TaskRequirementSupport, SonarConfigConstants, SonarTaskConfigurator {
+
+	private static final Logger LOGGER = Logger.getLogger(AbstractSonarBuildTaskConfigurator.class);
 
 	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_HOST_URL, CFG_SONAR_HOST_USERNAME,
 		CFG_SONAR_HOST_PASSWORD, CFG_SONAR_JDBC_URL, CFG_SONAR_JDBC_USERNAME, CFG_SONAR_JDBC_PASSWORD,
@@ -72,6 +75,15 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 		taskConfiguratorHelper.validateBuilderLabel(params, errorCollection);
 		taskConfiguratorHelper.validateJdk(params, errorCollection);
+		validateSonarHost(params, errorCollection);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateSonarHost(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar Host Properties");
 		if (StringUtils.isBlank(params.getString(CFG_SONAR_HOST_URL))) {
 			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.mandatory"));
 		} else if (!params.getString(CFG_SONAR_HOST_URL).startsWith("http://")
@@ -81,13 +93,21 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	}
 
 	/**
-	 * Internal method to validate the Sonar Server configuration
-	 * 
-	 * @param params the {@link ActionParametersMap}
-	 * @param errorCollection the {@link ErrorCollection}
+	 * {@inheritDoc}
 	 */
-	protected void validateSonarServer(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
+	@Override
+	public void validateSonarServer(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Sonar JDBC Properties");
 		// TODO Validate the JDBC settings if non default
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validateAdvancedProperties(ActionParametersMap params, ErrorCollection errorCollection) {
+		LOGGER.debug("Validating Advanced Sonar Properties");
+		// Not needed yet
 	}
 
 	/**

@@ -31,20 +31,22 @@ import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
 import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarTaskUtils;
 
 /**
+ * Sonar Runner JDBC {@link BulkAction}
+ * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 @SuppressWarnings("unchecked")
-public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkAction {
+public class UpdateSonarRunnerJDBCBulkAction extends AbstractUpdateSonarJDBCBulkAction {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(UpdateSonarMavenJDBCProfileBulkAction.class);
+	private static final Logger LOGGER = Logger.getLogger(UpdateSonarRunnerJDBCBulkAction.class);
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String getKey() {
-		return "bulk.action.sonar.maven.jdbc.profile.update";
+		return "bulk.action.sonar.runner.jdbc.update";
 	}
 
 	/**
@@ -52,7 +54,7 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public String getTitle() {
-		return getText("bulkAction.sonarJdbcProfile.title");
+		return getText("bulkAction.sonarRunnerJdbc.title");
 	}
 
 	/**
@@ -60,7 +62,7 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public String getChangedItem() {
-		return getText("bulkAction.sonarJdbcProfile.changeItem");
+		return getText("bulkAction.sonarRunnerJdbc.changeItem");
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public WebWorkAction getViewAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewSonarJdbcProfile");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewSonarRunnerJdbc");
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public WebWorkAction getViewUpdatedAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewUpdatedSonarJdbcProfile");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "viewUpdatedSonarRunnerJdbc");
 	}
 
 	/**
@@ -84,22 +86,32 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public WebWorkAction getEditSnippetAction() {
-		return new BulkAction.WebWorkActionImpl("/admin/sonar", "editSonarJdbcProfile");
+		return new BulkAction.WebWorkActionImpl("/admin/sonar", "editSonarRunnerJdbc");
 	}
 
 	/**
-	 * Get the new Sonar JDBC Profile
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Map<String, String> getTaskConfigurationMap(Map<String, String[]> params) {
+		Map<String, String> config = super.getTaskConfigurationMap(params);
+		config.put(CFG_SONAR_SERVER_CONFIGURED, getNewServerConfigured(params).toString());
+		return config;
+	}
+
+	/**
+	 * Get the new Sonar JDBC server configured
 	 * 
 	 * @param params the submitted parameters
-	 * @return the new JDBC profile, may be <code>empty</code>
+	 * @return the new JDBC server configured
 	 */
-	public String getNewProfile(Map<String, String[]> params) {
-		if (params.get(CFG_SONAR_JDBC_PROFILE) != null) {
-			LOGGER.debug("Found new Sonar JDBC Profile");
-			return ((String[])params.get(CFG_SONAR_JDBC_PROFILE))[0];
+	public Boolean getNewServerConfigured(Map<String, String[]> params) {
+		if (params.get(CFG_SONAR_SERVER_CONFIGURED) != null) {
+			LOGGER.debug("New " + CFG_SONAR_SERVER_CONFIGURED + " is set");
+			return Boolean.TRUE;
 		}
-		LOGGER.debug("New Sonar JDBC Profile not found");
-		return "";
+		LOGGER.debug("New " + CFG_SONAR_SERVER_CONFIGURED + " is not set");
+		return Boolean.FALSE;
 	}
 
 	/**
@@ -107,7 +119,7 @@ public class UpdateSonarMavenJDBCProfileBulkAction extends AbstractSonarBulkActi
 	 */
 	@Override
 	public boolean isApplicable(Plan plan) {
-		return SonarTaskUtils.hasSonarTasks(plan, SonarPredicates.isSonarMavenTask());
+		return SonarTaskUtils.hasSonarTasks(plan, SonarPredicates.isSonarRunnerTask());
 	}
 
 }
