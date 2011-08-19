@@ -121,6 +121,7 @@
 				<includes>
 					<include>i18n/**/**.properties</include>
 					<include>images/**/**</include>
+					<include>moxy/**/**</include>
 					<include>scripts/**/**.js</include>
 					<include>styles/**/**.css</include>
 					<include>**/*.class</include>
