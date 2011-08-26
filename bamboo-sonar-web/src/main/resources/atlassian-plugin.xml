@@ -54,11 +54,18 @@
             <property key="content-type" value="text/css"/>
         </resource>
 	</web-resource>
+	<web-resource key="sonar-panel" name="Sonar Panel Resources">
+		<dependency>${atlassian.plugin.key}:panel-css</dependency>
+	</web-resource>
 
 	<!-- W E B   P A N E L S -->
-	<web-panel key="analysisOverviewPanel" location="sonar.web.panel">
+	<web-panel key="analysisOverviewPanel" location="sonar.web.panel.gadgets">
 		<context-provider class="com.marvelution.bamboo.plugins.sonar.web.contextproviders.SonarConfigurationContextProvider" />
 		<resource name="view" type="freemarker" location="/com/marvelution/bamboo/plugins/sonar/web/panels/analysisOverviewPanel.ftl" />
+	</web-panel>
+	<web-panel key="sonarTimeMachineChart" location="sonar.web.panel">
+		<context-provider class="com.marvelution.bamboo.plugins.sonar.web.contextproviders.SonarTimeMachineChartContextProvider" />
+		<resource name="view" type="freemarker" location="/com/marvelution/bamboo/plugins/sonar/web/panels/sonarTimeMachineChart.ftl" />
 	</web-panel>
 
 	<!-- W E B   I T E M S -->
@@ -91,6 +98,22 @@
 				<result name="error" type="freemarker">/error.ftl</result>
 			</action>
 		</package>
+		<package name="metricsFragments" extends="buildView" namespace="/sonar/ajax">
+			<action name="addMetrics" class="com.marvelution.bamboo.plugins.sonar.web.actions.metrics.EditMetrics" method="addMetrics">
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metricView.ftl</result>
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metricInput.ftl</result>
+				<result name="error" type="json" />
+			</action>
+			<action name="viewMetrics" class="com.marvelution.bamboo.plugins.sonar.web.actions.metrics.EditMetrics" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metricView.ftl</result>
+			</action>
+			<action name="editMetrics" class="com.marvelution.bamboo.plugins.sonar.web.actions.metrics.EditMetrics" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metricInput.ftl</result>
+			</action>
+			<action name="deleteMetric" class="com.marvelution.bamboo.plugins.sonar.web.actions.metrics.EditMetrics" method="deleteMetric">
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metricView.ftl</result>
+			</action>
+		</package>
 	</xwork>
 
 	<!-- A D M I N   W E B   I T E M S -->
@@ -108,5 +131,10 @@
 			</action>
 		</package>
 	</xwork>
+
+	<!-- C O M P O N E N T S -->
+	<component key="sonarMetricsManager" name="Sonar Metrics Manager" class="com.marvelution.bamboo.plugins.sonar.web.metrics.DefaultSonarMetricsManager">
+		<interface>com.marvelution.bamboo.plugins.sonar.web.metrics.SonarMetricsManager</interface>
+	</component>
 
 </atlassian-plugin>

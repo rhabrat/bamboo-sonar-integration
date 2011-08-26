@@ -26,7 +26,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>bamboo-sonar-web</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 
 	<name>Bamboo Sonar Integration :: Web Module</name>
 	<description>Set of Web UI related items to integrate the Sonar Analysis results within Atlassian Bamboo</description>

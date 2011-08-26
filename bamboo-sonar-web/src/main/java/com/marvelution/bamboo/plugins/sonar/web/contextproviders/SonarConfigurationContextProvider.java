@@ -20,6 +20,8 @@
 package com.marvelution.bamboo.plugins.sonar.web.contextproviders;
 
 import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants.*;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,7 +35,6 @@ import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.plugin.PluginParseException;
 import com.atlassian.plugin.web.ContextProvider;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
 import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarTaskUtils;
 import com.marvelution.bamboo.plugins.sonar.web.SonarConfiguration;
@@ -66,41 +67,45 @@ public class SonarConfigurationContextProvider implements ContextProvider {
 					+ entry.getValue().getClass().getName());
 			}
 		}
-		context.put("sonarConfigurations",
+		context.put("sonarConfiguration",
 			getSonarConfigurationFromJobs(SonarTaskUtils.getJobsWithSonarTasks((Plan) context.get("plan"))));
 		return context;
 	}
 
 	/**
-	 * Get the {@link List} of {@link SonarConfiguration} objects from the given {@link Job}s {@link List}
+	 * Get the {@link SonarConfiguration} object from the given {@link Job}s {@link List}
 	 * 
 	 * @param jobs the {@link Job} {@link List} to get the {@link SonarConfiguration} from
-	 * @return the {@link List} {@link SonarConfiguration}s
+	 * @return the {@link SonarConfiguration}
 	 */
-	private List<SonarConfiguration> getSonarConfigurationFromJobs(List<Job> jobs) {
-		List<SonarConfiguration> configs = Lists.newArrayList();
+	private SonarConfiguration getSonarConfigurationFromJobs(List<Job> jobs) {
+		SonarConfiguration config = new SonarConfiguration();
 		for (Job job : jobs) {
 			TaskDefinition taskDefinition = Iterables.find(job.getBuildDefinition().getTaskDefinitions(),
 				SonarPredicates.isSonarTask(), null);
 			if (taskDefinition != null) {
-				SonarConfiguration config = new SonarConfiguration();
 				// Copy the Sonar Host configuration form the task definition
 				config.setHost(taskDefinition.getConfiguration().get(CFG_SONAR_HOST_URL));
 				config.setUsername(taskDefinition.getConfiguration().get(CFG_SONAR_HOST_USERNAME));
 				config.setPassword(taskDefinition.getConfiguration().get(CFG_SONAR_HOST_PASSWORD));
 				// And get the Sonar project key and name form the job build results
-				for (BuildResultsSummary buildResult : job.getBuildResultSummaries()) {
+				List<BuildResultsSummary> results = job.getBuildResultSummaries();
+				Collections.sort(results);
+				Collections.reverse(results);
+				for (BuildResultsSummary buildResult : results) {
+					LOGGER.debug("Checking result of build: " + buildResult.getBuildKey() + " #" + buildResult.getBuildNumber());
 					if (buildResult.getCustomBuildData().containsKey(TRD_SONAR_PROJECT_KEY)
 						&& buildResult.getCustomBuildData().containsKey(TRD_SONAR_PROJECT_NAME)) {
 						config.setProjectKey(buildResult.getCustomBuildData().get(TRD_SONAR_PROJECT_KEY));
 						config.setProjectName(buildResult.getCustomBuildData().get(TRD_SONAR_PROJECT_NAME));
+						break;
 					}
 				}
-				LOGGER.debug("Adding " + config.toString() + " to the Context");
-				configs.add(config);
+				LOGGER.debug("Found Configuration " + config.toString());
+				break;
 			}
 		}
-		return configs;
+		return config;
 	}
 
 }

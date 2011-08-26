@@ -25,7 +25,7 @@
 <head>
     <title>[@ui.header pageKey='sonar.panel.title' object='${plan.name} ${chainResultNumber}' title=true /]</title>
     <meta name="tab" content="sonar" />
-    ${webResourceManager.requireResource("${pluginKey}:panel-css")}
+    ${webResourceManager.requireResource("${pluginKey}:sonar-panel")}
 </head>
 <body>
 	[#include '../common/commonViewSonarResult.ftl'/]

@@ -17,6 +17,53 @@
  * under the License.
 */
 
+/** Panel Styles **/
+#main-panel {
+	min-width: 966px;
+	padding: 12px;
+}
+
+#main-panel .column {
+	float: left;
+	margin: 10px;
+	padding: 10px;
+}
+
+#primary {
+	width: 60%;
+}
+
+#secondary {
+	width: 30%
+}
+
+.field-group {
+	clear: both;
+	display: block;
+	margin-bottom: 5px;
+	min-height: 1.6em;
+	padding: 0 0 5px 100px;
+}
+
+.field-group label {
+	color: #505050;
+	float: left;
+	display: block;
+	left: -100px;
+	line-height: 1;
+	margin-right: -90px;
+	padding-top: 4px;
+	position: relative;
+	width: 100px;
+	text-align: right;
+}
+
+.field-value {
+	display: inline-block;
+	line-height: 1;
+	padding-top: 4px;
+}
+
 /** Styles for the Gadget Dialog **/
 .gadgetList {
 	float: left;

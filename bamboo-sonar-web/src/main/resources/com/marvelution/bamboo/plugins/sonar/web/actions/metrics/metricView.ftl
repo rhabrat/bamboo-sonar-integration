@@ -17,16 +17,5 @@
  ~ under the License.
  -->
 
-[#-- @ftlvariable name="action" type="com.marvelution.bamboo.plugins.sonar.web.actions.build.ViewBuildSonarResult" --]
-[#-- @ftlvariable name="" type="com.marvelution.bamboo.plugins.sonar.web.actions.build.ViewBuildSonarResult" --]
-
-<html>
-<head>
-	<title>[@ui.header pageKey='sonar.panel.title' object='${build.name} ${buildResultsSummary.buildNumber}' title=true /]</title>
-    <meta name="tab" content="sonar" />
-    ${webResourceManager.requireResource("${pluginKey}:sonar-panel")}
-</head>
-<body>
-	[#include '../common/commonViewSonarResult.ftl'/]
-</body>
-</html>
+[#import "/com/marvelution/bamboo/plugins/sonar/web/actions/metrics/metrics.ftl" as met /]
+[@met.showMetricsWithNone plan /]

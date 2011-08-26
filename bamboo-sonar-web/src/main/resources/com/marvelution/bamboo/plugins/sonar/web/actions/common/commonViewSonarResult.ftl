@@ -20,13 +20,21 @@
 [#assign artifactTools]
     <ul class="toolbar-group">
         <li class="toolbar-item">
-            <a id="viewGadgets" class="toolbar-trigger"
-               title="[@ww.text name='sonar.view.gadget.list' /]">[@ww.text name='sonar.view.gadget.list' /]</a>
+            <a id="viewGadgets" class="toolbar-trigger" title="[@ww.text name='sonar.view.gadget.list' /]">
+            	[@ww.text name='sonar.view.gadget.list' /]
+            </a>
         </li>
     </ul>
 [/#assign]
 [@ui.bambooPanel titleKey='sonar.panel.header' cssClass='form-view-header' auiToolbar=artifactTools headerWeight='h1' /]
-[@ui.renderWebPanels 'sonar.web.panel'/]
+<div id="main-panel">
+	<div class="column" id="primary">
+		[@ui.renderWebPanels 'sonar.web.panel' /]
+	</div>
+	<div class="column" id="secondary">
+		[@ui.renderWebPanels 'sonar.web.panel.gadgets' /]
+	</div>
+</div>
 
 <div class="hidden">
 	<ol id="gadgetList" class="gadgetList">

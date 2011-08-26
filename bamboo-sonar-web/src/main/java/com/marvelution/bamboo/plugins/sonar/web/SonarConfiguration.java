@@ -20,6 +20,7 @@
 package com.marvelution.bamboo.plugins.sonar.web;
 
 import org.apache.commons.lang.StringUtils;
+import org.sonar.wsclient.Host;
 
 /**
  * Sonar Configuration object
@@ -47,6 +48,20 @@ public class SonarConfiguration {
 	 * @return the host
 	 */
 	public String getHost() {
+		return host;
+	}
+
+	/**
+	 * Get the {@link Host} used for the Sonar WS Client library
+	 * 
+	 * @return the {@link Host}
+	 */
+	public Host getSonarHost() {
+		Host host = new Host(this.host);
+		if (isSecured()) {
+			host.setUsername(username);
+			host.setPassword(password);
+		}
 		return host;
 	}
 	
@@ -141,11 +156,20 @@ public class SonarConfiguration {
 	}
 
 	/**
+	 * Is analyzed check method
+	 * 
+	 * @return <code>true</code> if the {@link #projectKey} and {@link #projectName} fields are not blank
+	 */
+	public boolean isAnalyzed() {
+		return StringUtils.isNotBlank(projectKey) && StringUtils.isNotBlank(projectName);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "Sonar Config for " + getProjectKey() + " on " +getHost();
+		return "Sonar Config for " + getProjectKey() + " on " + getHost();
 	}
 
 }
