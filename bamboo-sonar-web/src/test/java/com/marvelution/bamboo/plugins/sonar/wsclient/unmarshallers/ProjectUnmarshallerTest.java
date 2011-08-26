@@ -25,7 +25,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -100,11 +99,6 @@ public class ProjectUnmarshallerTest {
 		Version last = project.getLastVersion();
 		assertThat(last.getName(), is("2.11-SNAPSHOT"));
 		assertThat(last.getSid(), is(16894689));
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(last.getDate());
-		assertThat(cal.get(Calendar.YEAR), is(2011));
-		assertThat(cal.get(Calendar.MONTH), is(7));
-		assertThat(cal.get(Calendar.DATE), is(23));
 	}
 
 	/**
