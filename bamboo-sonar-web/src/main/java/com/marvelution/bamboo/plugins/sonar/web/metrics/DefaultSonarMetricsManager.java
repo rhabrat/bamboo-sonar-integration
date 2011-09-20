@@ -41,8 +41,7 @@ public class DefaultSonarMetricsManager implements SonarMetricsManager {
 
 	public static final String BASE_BANDANA_KEY = PluginHelper.getPluginKey() + ":";
 	public static final String TIME_MACHINE_BASE_BANDANA_KEY = BASE_BANDANA_KEY + "SonarTimeMachineMetrics:";
-	public static final String GLOBAL_TIME_MACHINE_BASE_BANDANA_KEY = BASE_BANDANA_KEY
-		+ "SonarTimeMachineMetrics:Global";
+	public static final String GLOBAL_TIME_MACHINE_BANDANA_KEY = TIME_MACHINE_BASE_BANDANA_KEY + "Global";
 	public static final List<String> DEFAULT_METRICS = ImmutableList.of("violations_density", "complexity",
 		"coverage");
 
@@ -120,7 +119,7 @@ public class DefaultSonarMetricsManager implements SonarMetricsManager {
 	 */
 	private String getTimeMachineMetricsBandanaKey(Plan plan, User user) {
 		if (user == null) {
-			return GLOBAL_TIME_MACHINE_BASE_BANDANA_KEY;
+			return GLOBAL_TIME_MACHINE_BANDANA_KEY;
 		} else {
 			return TIME_MACHINE_BASE_BANDANA_KEY + user.getName();
 		}

@@ -77,6 +77,7 @@ public class EditMetrics extends PlanActionSupport implements PlanReadSecurityAw
 		List<String> newMetrics = LabelParser.split(getMetricInput());
 		for (String metric : newMetrics) {
 			// TODO Validate against Sonar
+			// We can use the LabelParser to validate the Sonar Metric
 			if (!LabelParser.isValidLabelName(metric)) {
 				addFieldError("metricInput",
 					metric + " contains invalid characters " + LabelParser.getInvalidCharactersAsString());
