@@ -46,8 +46,14 @@ public abstract class AbstractSonarServerConfigurationCommandDecorator extends
 		Map<String, String> properties = Maps.newHashMap();
 		final ConfigurationMap configuration = taskContext.getConfigurationMap();
 		properties.put("sonar.host.url", configuration.get(CFG_SONAR_HOST_URL));
-		properties.put("sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
-		properties.put("sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
+		// Sonar JDBC Username is optional
+		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_USERNAME))) {
+			properties.put("sonar.jdbc.username", configuration.get(CFG_SONAR_JDBC_USERNAME));
+		}
+		// Sonar JDBC Password is optional
+		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_PASSWORD))) {
+			properties.put("sonar.jdbc.password", configuration.get(CFG_SONAR_JDBC_PASSWORD));
+		}
 		// Sonar JDBC URL is optional
 		if (StringUtils.isNotBlank(configuration.get(CFG_SONAR_JDBC_URL))) {
 			properties.put("sonar.jdbc.url", configuration.get(CFG_SONAR_JDBC_URL));
