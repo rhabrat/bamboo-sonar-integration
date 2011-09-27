@@ -91,13 +91,14 @@
 .gadgetList li img {
 	border: 1px solid rgb(153, 153, 153);
 	float: left;
-	margin: 10px 0px 0px -132px;
+	margin: 5px 0px 0px -132px;
 }
 
 .gadgetList li h3 {
 	font-size: 1.5em;
 	font-weight: bold;
 	white-space: nowrap;
+	margin-left: -132px;
 }
 
 .gadgetList li p {

@@ -40,9 +40,10 @@
 	<ol id="gadgetList" class="gadgetList">
 	[#list gadgetIds as gadgetId]
 		<li>
-			<img src="${baseUrl}/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetId}-thumb.png" width="120" height="60" />
 			<h3>[@ww.text name='sonar.gadget.${gadgetId}.title' /]</h3>
+			<img src="${baseUrl}/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetId}-thumb.png" width="120" height="60" />
 			<p>[@ww.text name='sonar.gadget.${gadgetId}.description' /]</p>
+			<a href="${baseUrl}/rest/gadgets/1.0/g/com.marvelution.bamboo.plugins.sonar.web/gadgets/sonar-${gadgetId}-gadget.xml" target="_parent">[@ww.text name='sonar.gadget.url' /]</a>
 		</li>
 	[/#list]
 	</ol>
@@ -55,7 +56,7 @@ AJS.$(document).ready(function() {
 	gadgetPopup.addHeader("[@ww.text name='sonar.gadgets.list.heading' /]");
 	gadgetPopup.addPanel("Panel 1", "panel1");
 	gadgetPopup.getCurrentPanel().body.append(AJS.$("#gadgetList"));
-	gadgetPopup.addButton("[@ww.text name='sonar.gadgets.list.close' /]", function(dialog) {
+	gadgetPopup.addCancel("[@ww.text name='sonar.gadgets.list.close' /]", function(dialog) {
 		dialog.hide();
 	});
 	gadgetPopup.gotoPage(0);
