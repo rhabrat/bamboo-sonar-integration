@@ -23,7 +23,7 @@
 	<parent>
 		<artifactId>bamboo-sonar-integration</artifactId>
 		<groupId>com.marvelution.bamboo.plugins</groupId>
-		<version>1.0.0</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>bamboo-sonar-tasks</artifactId>
 	<packaging>jar</packaging>
@@ -33,9 +33,9 @@
 	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.parent.version}/${project.artifactId}</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/tags/bamboo-sonar-integration-1.0.0/bamboo-sonar-tasks</connection>
-		<developerConnection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/tags/bamboo-sonar-integration-1.0.0/bamboo-sonar-tasks</developerConnection>
-		<url>http://fisheye.marvelution.com/browse/public/atlassian/bamboo-sonar-integration/tags/bamboo-sonar-integration-1.0.0/bamboo-sonar-tasks</url>
+		<connection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</connection>
+		<developerConnection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</developerConnection>
+		<url>http://fisheye.marvelution.com/browse/public/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</url>
 	</scm>
 
 	<properties>
