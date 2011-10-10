@@ -53,9 +53,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk</connection>
-		<developerConnection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk</developerConnection>
-		<url>http://fisheye.marvelution.com/browse/public/atlassian/bamboo-sonar-integration/trunk</url>
+		<connection>scm:git:git@github.com:Marvelution/bamboo-sonar-integration.git</connection>
+		<developerConnection>scm:git:git@github.com:Marvelution/bamboo-sonar-integration.git</developerConnection>
+		<url>http://fisheye.marvelution.com/browse/bamboo-sonar-integration</url>
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>

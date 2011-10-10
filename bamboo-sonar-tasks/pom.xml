@@ -33,9 +33,9 @@
 	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.parent.version}/${project.artifactId}</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</connection>
-		<developerConnection>scm:svn:http://svn.marvelution.com/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</developerConnection>
-		<url>http://fisheye.marvelution.com/browse/public/atlassian/bamboo-sonar-integration/trunk/bamboo-sonar-tasks</url>
+		<connection>scm:git:git@github.com:Marvelution/bamboo-sonar-integration.git/bamboo-sonar-tasks</connection>
+		<developerConnection>scm:git:git@github.com:Marvelution/bamboo-sonar-integration.git/bamboo-sonar-tasks</developerConnection>
+		<url>http://fisheye.marvelution.com/browse/bamboo-sonar-integration/bamboo-sonar-tasks</url>
 	</scm>
 
 	<properties>
