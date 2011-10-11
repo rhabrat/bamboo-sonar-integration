@@ -19,9 +19,12 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import static com.atlassian.bamboo.task.TaskConfigConstants.CFG_BUILDER_LABEL;
+import static com.atlassian.bamboo.task.TaskConfigConstants.CFG_ENVIRONMENT_VARIABLES;
 import static com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerCapabilityDefaultsHelper.SONAR_RUNNER_EXECUTABLE;
 import static com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerCapabilityDefaultsHelper.SONAR_RUNNER_HOME;
 import static com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerCapabilityDefaultsHelper.SONAR_RUNNER_PREFIX;
+import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants.CFG_SONAR_EXTRA_CUSTOM_PARAMETERS;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,13 +66,14 @@ public class SonarRunnerConfig {
 	 */
 	public SonarRunnerConfig(TaskContext taskContext, CapabilityContext capabilityContext,
 			EnvironmentVariableAccessor environmentVariableAccessor) {
-		builderLabel = ((String) Preconditions.checkNotNull(taskContext.getConfigurationMap().get("label"),
+		builderLabel = ((String) Preconditions.checkNotNull(taskContext.getConfigurationMap().get(CFG_BUILDER_LABEL),
 			"Builder label is not defined"));
 		builderPath = ((String) Preconditions.checkNotNull(capabilityContext.getCapabilityValue(
 			SONAR_RUNNER_PREFIX + "." + builderLabel), "Builder path is not defined"));
-		environmentVariables = ((String)taskContext.getConfigurationMap().get("environmentVariables"));
+		environmentVariables = ((String)taskContext.getConfigurationMap().get(CFG_ENVIRONMENT_VARIABLES));
 		workingDirectory = taskContext.getWorkingDirectory();
 		commandline.add(getSonarRunnerExecutable(builderPath));
+		commandline.add(taskContext.getConfigurationMap().get(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS));
 		environment.putAll(environmentVariableAccessor.splitEnvironmentAssignments(environmentVariables, false));
 		environment.put(SONAR_RUNNER_HOME, builderPath);
 	}

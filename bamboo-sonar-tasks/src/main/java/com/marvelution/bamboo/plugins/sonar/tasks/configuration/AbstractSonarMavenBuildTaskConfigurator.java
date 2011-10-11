@@ -53,11 +53,16 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 					@Nullable final TaskDefinition previousTaskDefinition) {
 		Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 		taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(config, params, FIELDS_TO_COPY);
+		StringBuilder goals = new StringBuilder();
 		if (params.getBoolean(CFG_SONAR_PLUGIN_PREINSTALLED)) {
-			config.put(CFG_GOALS, SONAR_PLUGIN_GOAL + ":" + SONAR_PLUGIN_GOAL);
+			goals.append(SONAR_PLUGIN_GOAL);
 		} else {
-			config.put(CFG_GOALS, SONAR_PLUGIN_GROUPID + ":" + SONAR_PLUGIN_ARTIFACTID + ":"
-				+ getSonarMavenPluginVersion() + ":" + SONAR_PLUGIN_GOAL);
+			goals.append(SONAR_PLUGIN_GROUPID).append(":").append(SONAR_PLUGIN_ARTIFACTID).append(":")
+				.append(getSonarMavenPluginVersion());
+		}
+		goals.append(":").append(SONAR_PLUGIN_GOAL);
+		if (StringUtils.isNotBlank(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS))) {
+			goals.append(" ").append(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS));
 		}
 		return config;
 	}

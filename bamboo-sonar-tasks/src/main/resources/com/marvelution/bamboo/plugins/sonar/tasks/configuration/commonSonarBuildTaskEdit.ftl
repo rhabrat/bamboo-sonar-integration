@@ -1,6 +1,6 @@
-<!--
- ~ Licensed to Marvelution under one or more contributor license 
- ~ agreements.  See the NOTICE file distributed with this work 
+[#--
+ ~ Licensed to Marvelution under one or more contributor license
+ ~ agreements.  See the NOTICE file distributed with this work
  ~ for additional information regarding copyright ownership.
  ~ Marvelution licenses this file to you under the Apache License,
  ~ Version 2.0 (the "License"); you may not use this file except
@@ -15,10 +15,11 @@
  ~ KIND, either express or implied. See the License for the
  ~ specific language governing permissions and limitations
  ~ under the License.
- -->
+ --]
 
 [@ui.bambooSection titleKey='sonar.extra.configuration']
 	[@ww.textfield labelKey='sonar.language' name='sonarLanguage' cssClass="long-field" /]
 	[@ww.textfield labelKey='sonar.java.source' name='sonarJavaSource' cssClass="long-field" /]
 	[@ww.textfield labelKey='sonar.java.target' name='sonarJavaTarget' cssClass="long-field" /]
+	[@ww.textarea labelKey='sonar.custom.extra.parameters' name='sonarExtraCustomParameters' rows='4' required='true' cssClass="long-field" /]
 [/@ui.bambooSection]

@@ -106,6 +106,7 @@ public interface SonarConfigConstants {
 	String CFG_SONAR_LANGUAGE = "sonarLanguage";
 	String CFG_SONAR_JAVA_SOURCE = "sonarJavaSource";
 	String CFG_SONAR_JAVA_TARGET = "sonarJavaTarget";
+	String CFG_SONAR_EXTRA_CUSTOM_PARAMETERS = "sonarExtraCustomParameters";
 
 	/**
 	 * Configuration screen Context variable names
