@@ -64,6 +64,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 		if (StringUtils.isNotBlank(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS))) {
 			goals.append(" ").append(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS));
 		}
+		config.put(CFG_GOALS, goals.toString());
 		return config;
 	}
 

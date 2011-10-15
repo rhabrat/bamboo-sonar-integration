@@ -21,5 +21,5 @@
 	[@ww.textfield labelKey='sonar.language' name='sonarLanguage' cssClass="long-field" /]
 	[@ww.textfield labelKey='sonar.java.source' name='sonarJavaSource' cssClass="long-field" /]
 	[@ww.textfield labelKey='sonar.java.target' name='sonarJavaTarget' cssClass="long-field" /]
-	[@ww.textarea labelKey='sonar.custom.extra.parameters' name='sonarExtraCustomParameters' rows='4' required='true' cssClass="long-field" /]
+	[@ww.textarea labelKey='sonar.custom.extra.parameters' name='sonarExtraCustomParameters' rows='4' cssClass="long-field" /]
 [/@ui.bambooSection]
