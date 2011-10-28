@@ -82,7 +82,7 @@
 
 	<properties>
 		<project.jdk.revision>1.6</project.jdk.revision>
-		<atlassian.bamboo.version>3.2</atlassian.bamboo.version>
+		<atlassian.bamboo.version>3.3</atlassian.bamboo.version>
 		<sonar.version>2.8</sonar.version>
 		<atlassian.plugin.key.base>${project.groupId}.sonar</atlassian.plugin.key.base>
 		<stagingSiteURL>dav:http://repository.marvelution.com/content/sites/apidocs-staging/${project.artifactId}/${project.version}/</stagingSiteURL>

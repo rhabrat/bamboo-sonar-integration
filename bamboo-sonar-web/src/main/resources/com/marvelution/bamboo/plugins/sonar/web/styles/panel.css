@@ -23,17 +23,19 @@
 }
 
 #main-panel .column {
-	float: left;
 	margin: 10px;
 	padding: 10px;
 }
 
 #primary {
 	width: 60%;
+	float: left;
 }
 
 #secondary {
-	width: 30%
+	width: 30%;
+	clear: right;
+	float: right;
 }
 
 .field-group {

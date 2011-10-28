@@ -76,7 +76,8 @@ public class UpdateSonarBuildTaskConfiguration extends ConfigureBuildTasks {
 						TaskDefinition newTaskDefinition =
 							taskConfigurationService.editTask(PlanKeys.getPlanKey(getPlanKey()),
 								currectTaskDefinition.getId(), currectTaskDefinition.getUserDescription(),
-								getTaskConfigurationMap(descriptor, currectTaskDefinition));
+								getTaskConfigurationMap(descriptor, currectTaskDefinition),
+								currectTaskDefinition.getRootDirectorySelector());
 						LOGGER.info("Successfully update task " + newTaskDefinition.getId() + " of plan: "
 							+ getPlanKey());
 					} catch (Exception e) {

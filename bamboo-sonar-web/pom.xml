@@ -39,7 +39,7 @@
 	</scm>
 
 	<properties>
-		<sonar.gadgets.version>1.4.0</sonar.gadgets.version>
+		<sonar.gadgets.version>1.4.1-SNAPSHOT</sonar.gadgets.version>
 		<atlassian.plugin.name>Marvelution Bamboo Sonar Web Plugin</atlassian.plugin.name>
 		<atlassian.plugin.key>${atlassian.plugin.key.base}.web</atlassian.plugin.key>
 		<sonar.gadgets.directory>${project.build.directory}/generated-resources/sonar-gadgets</sonar.gadgets.directory>

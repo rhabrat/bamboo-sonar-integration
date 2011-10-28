@@ -42,8 +42,8 @@ public abstract class AbstractSonarBulkAction extends BambooActionSupport implem
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isApplicableForJobs() {
-		return true;
+	public boolean isApplicableForRepositories() {
+		return false;
 	}
 
 	/**
