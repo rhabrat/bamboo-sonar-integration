@@ -16,7 +16,7 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  --]
-[#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigBean" --]
+[#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport" --]
 
 [#assign addExecutableLink][@ui.displayAddExecutableInline executableKey='mvn3'/][/#assign]
 [@ww.select cssClass="builderSelectWidget" labelKey='executable.type' name='label'

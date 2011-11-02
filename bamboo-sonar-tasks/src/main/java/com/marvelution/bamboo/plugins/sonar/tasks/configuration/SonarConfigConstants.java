@@ -21,9 +21,9 @@ package com.marvelution.bamboo.plugins.sonar.tasks.configuration;
 
 import java.util.Map;
 
-import com.atlassian.bamboo.plugins.maven.task.AbstractMavenConfig;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.google.common.collect.ImmutableMap;
+import com.marvelution.bamboo.plugins.sonar.tasks.AbstractSonarMavenConfig;
 
 /**
  * Configuration Constants interface
@@ -95,7 +95,7 @@ public interface SonarConfigConstants {
 	);
 	String CTX_USES_PROFILE = "usesProfile";
 
-	String CFG_GOALS = AbstractMavenConfig.CFG_GOALS;
+	String CFG_GOALS = AbstractSonarMavenConfig.CFG_GOALS;
 	String CFG_PROJECT_FILENAME = TaskConfigConstants.CFG_PROJECT_FILENAME;
 
 	String MAVEN_PROJECT_FILE = "pom.xml";

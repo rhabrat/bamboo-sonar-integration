@@ -16,11 +16,6 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  --]
-[#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport" --]
 
-[#assign addExecutableLink][@ui.displayAddExecutableInline executableKey='mvn2' /][/#assign]
-[@ww.select cssClass="builderSelectWidget" labelKey='executable.type' name='label'
-            list=uiConfigBean.getExecutableLabels('mvn2')
-            extraUtility=addExecutableLink /]
-
-[#include "commonSonarMavenBuildTaskEdit.ftl"]
+[#import "/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metrics.ftl" as met /]
+[@met.showMetricsWithNone plan /]

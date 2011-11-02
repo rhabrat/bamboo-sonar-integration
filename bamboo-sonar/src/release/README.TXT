@@ -11,8 +11,8 @@ BAMBOO - Quick Installation Guide
 -------------------------------
 1. Shutdown the Bamboo server instance, and all agents
 2. Remove any existing Bamboo Sonar Integration plugins of previous versions
-3. Install the new tasks plugin (bamboo-sonar-tasks-${project.version}.jar) in the [BAMBOO_INSTALL]/webapp/WEB-INF/lib directory
-4. Install the new web plugin (bamboo-sonar-web-${project.version}.jar) in the [BAMBOO_HOME]/plugins directory
+3. Install the new tasks plugin (bamboo-sonar-tasks-${project.version}.jar) in the [BAMBOO_HOME]/plugins directory
+4. Install the new web plugin (bamboo-sonar-web-${project.version}.jar) in the [BAMBOO_INSTALL]/webapp/WEB-INF/lib directory
 5. Start the Bamboo server instance, and all the agents
 
 

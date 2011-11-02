@@ -17,12 +17,12 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<atlassian-plugin name="${atlassian.plugin.name}" key="${atlassian.plugin.key}" pluginsVersion="1">
+<atlassian-plugin name="${atlassian.plugin.name}" key="${atlassian.plugin.key}" system="false" pluginsVersion="2">
 	<plugin-info>
 		<description>${project.description}</description>
 		<vendor name="${project.organization.name}" url="${project.organization.url}" />
 		<version>${project.version}</version>
-		<application-version min="3.2" max="3.2"/>
+		<application-version min="${atlassian.bamboo.version}" />
 	</plugin-info>
 
 	<!-- I 1 8 N   R E S O U R C E S -->
@@ -85,70 +85,118 @@
 		<decoratedTaskType key="task.builder.sonar" />
 	</taskProcessCommandDecorator>
 
+	<!-- W E B   R E S O U R C E S -->
+	<web-resource key="publisher-specific" name="Publisher Specific Gadget Resources">
+		<dependency>${atlassian.plugin.key}:commons</dependency>
+		<dependency>com.atlassian.gadgets.publisher:ajs-gadgets-lite</dependency>
+		<resource type="download" name="ajs-gadgets.js" location="/scripts/ajs-gadgets/ajs.gadgets-min.js">
+			<property key="content-type" value="text/javascript" />
+			<param name="source" value="webContextStatic" />
+		</resource>
+		<resource type="download" name="common.css" location="/styles/gadgets/common.css">
+			<property key="content-type" value="text/css" />
+			<param name="source" value="webContextStatic" />
+		</resource>
+	</web-resource>
+	<web-resource key="commons" name="Common Web Resource Requirements">
+		<dependency>com.atlassian.auiplugin:jquery</dependency>
+		<dependency>com.atlassian.auiplugin:ajs</dependency>
+		<resource type="download" name="namespace.js" location="/scripts/jquery/plugins/namespace/namespace-min.js">
+			<property key="content-type" value="text/javascript"/>
+            <param name="source" value="webContextStatic"/>
+        </resource>
+	</web-resource>
+	<web-resource key="panel-css" name="Sonar Panel Resource Requirements">
+		<resource type="download" name="panel.css" location="/com/marvelution/bamboo/plugins/sonar/tasks/styles/panel.css">
+            <property key="content-type" value="text/css"/>
+        </resource>
+	</web-resource>
+	<web-resource key="sonar-panel" name="Sonar Panel Resources">
+		<dependency>${atlassian.plugin.key}:panel-css</dependency>
+	</web-resource>
+
+	<!-- W E B   P A N E L S -->
+	<web-panel key="analysisOverviewPanel" location="sonar.web.panel.gadgets">
+		<context-provider class="com.marvelution.bamboo.plugins.sonar.tasks.web.contextproviders.SonarConfigurationContextProvider" />
+		<resource name="view" type="freemarker" location="/com/marvelution/bamboo/plugins/sonar/tasks/panels/analysisOverviewPanel.ftl" />
+	</web-panel>
+	<web-panel key="sonarTimeMachineChart" location="sonar.web.panel">
+		<context-provider class="com.marvelution.bamboo.plugins.sonar.tasks.web.contextproviders.SonarTimeMachineChartContextProvider" />
+		<resource name="view" type="freemarker" location="/com/marvelution/bamboo/plugins/sonar/tasks/panels/sonarTimeMachineChart.ftl" />
+	</web-panel>
+
 	<!-- W E B   S E C T I O N S -->
 	<web-section key="sonar" name="Sonar" location="system.admin" weight="75">
 		<label key="websections.system.admin.sonar"/>
 	</web-section>
 
-	<!-- W E B   I T E M S -->
-	<web-item key="sonarBulkUpdate" name="Sonar Bulk Update" section="system.admin/sonar" weight="10">
-		<label key="webitems.system.admin.build.bulkAction"/>
-		<link linkId="sonarBulkAction">/admin/viewAvailableBulkAction.action</link>
-		<condition class="com.marvelution.bamboo.plugins.sonar.tasks.conditions.SonarBulkActionsConfiguredCondition" />
+	<!-- A D M I N   W E B   I T E M S -->
+	<web-item key="viewSonarGadgets" name="Sonar Gadgets" section="system.admin/sonar" weight="30">
+		<label key="webitems.system.admin.sonar.view.gadgets" />
+		<link linkId="viewSonarGadgets">/admin/sonar/viewSonarGadgets.action</link>
 	</web-item>
 
-	<!-- X W O R K   A C T I O N S -->
-	<xwork key="sonarBulkUpdateActions" name="Sonar Bulk Update Actions">
-		<package name="sonarBulkUpdate" extends="buildAdminEdit" namespace="/admin/sonar">
-			<action name="viewSonarHost" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarHost.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarHost.ftl</result>
-			</action>
-			<action name="viewUpdatedSonarHost" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
-				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarHost.ftl</result>
-			</action>
-			<action name="editSonarHost" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarHost.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarHost.ftl</result>
-			</action>
-			<action name="viewSonarRunnerJdbc" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarRunnerJdbc.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarRunnerJdbc.ftl</result>
-			</action>
-			<action name="viewUpdatedSonarRunnerJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
-				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarRunnerJdbc.ftl</result>
-			</action>
-			<action name="editSonarRunnerJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarRunnerJdbc.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarRunnerJdbc.ftl</result>
-			</action>
-			<action name="viewSonarMavenJdbc" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarMavenJdbc.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarMavenJdbc.ftl</result>
-			</action>
-			<action name="viewUpdatedSonarMavenJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
-				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarMavenJdbc.ftl</result>
-			</action>
-			<action name="editSonarMavenJdbc" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarMavenJdbc.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarMavenJdbc.ftl</result>
-			</action>
-			<action name="viewSonarMavenPlugin" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.ViewSonarBuildTaskConfiguration" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarMavenPlugin.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewSonarMavenPlugin.ftl</result>
-			</action>
-			<action name="viewUpdatedSonarMavenPlugin" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="confirm">
-				<result name="confirm" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/viewUpdatedSonarMavenPlugin.ftl</result>
-			</action>
-			<action name="editSonarMavenPlugin" class="com.atlassian.bamboo.ww2.actions.admin.bulk.BulkPlanAction" method="default">
-				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarMavenPlugin.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/editSonarMavenPlugin.ftl</result>
-			</action>
-			<action name="updateSonarTask" class="com.marvelution.bamboo.plugins.sonar.tasks.actions.admin.UpdateSonarBuildTaskConfiguration" method="performUpdate">
-				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
-				<result name="error" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/bulk/updateSonarTask.ftl</result>
+	<!-- W E B   I T E M S -->
+	<web-item key="sonar:${plan.key}-${resultsSummary.buildNumber}" name="sonar" section="chainResults.subMenu/chainResults" weight="100">
+		<label key="Sonar" />
+		<link linkId="sonar:${plan.key}-${resultsSummary.buildNumber}">/chain/result/viewChainSonarResult.action?planKey=${plan.key}&amp;buildNumber=${resultsSummary.buildNumber}</link>
+		<condition class="com.marvelution.bamboo.plugins.sonar.tasks.web.conditions.SonarResultWebItemCondition" />
+	</web-item>
+	<web-item key="sonar:${buildKey}-${buildNumber}" name="sonar" section="results.subMenu/results" weight="100">
+		<label key="Sonar" />
+		<link linkId="sonar:${buildKey}-${buildNumber}">/build/result/viewBuildSonarResult.action?buildKey=${buildKey}&amp;buildNumber=${buildNumber}</link>
+		<condition class="com.marvelution.bamboo.plugins.sonar.tasks.web.conditions.SonarResultWebItemCondition" />
+	</web-item>
+
+	<!-- A D M I N   X W O R K   A C T I O N S -->
+	<xwork key="sonarConfigExtra" name="Extra Sonar Admin Actions">
+		<package name="sonarAdminExtra" extends="admin" namespace="/admin/sonar">
+			<action name="viewSonarGadgets" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.admin.ViewSonarGadgets" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/viewSonarGadgets.ftl</result>
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/admin/viewSonarGadgets.ftl</result>
 			</action>
 		</package>
 	</xwork>
+
+	<!-- X W O R K   A C T I O N S -->
+	<xwork key="sonarWebActions" name="Sonar Web Actions">
+		<package name="sonarChainView" extends="chainViewResult">
+			<action name="viewChainSonarResult" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.chain.ViewChainSonarResult">
+				<param name="chainEquiv">/chain/result/viewChainSonarResult.action?planKey=${planKey}&amp;buildNumber=${buildNumber}</param>
+				<param name="jobEquiv">/build/result/viewBuildSonarResult.action?planKey=${planKey}&amp;buildNumber=${buildNumber}</param>
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/chain/viewChainSonarResult.ftl</result>
+				<result name="error" type="freemarker">/error.ftl</result>
+			</action>
+		</package>
+		<package name="sonarBuildView" extends="buildResultView">
+			<action name="viewBuildSonarResult" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.build.ViewBuildSonarResult">
+				<param name="chainEquiv">/chain/result/viewChainSonarResult.action?planKey=${planKey}&amp;buildNumber=${buildNumber}</param>
+				<param name="jobEquiv">/build/result/viewBuildSonarResult.action?planKey=${planKey}&amp;buildNumber=${buildNumber}</param>
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/build/viewBuildSonarResult.ftl</result>
+				<result name="error" type="freemarker">/error.ftl</result>
+			</action>
+		</package>
+		<package name="metricsFragments" extends="buildView" namespace="/sonar/ajax">
+			<action name="addMetrics" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.metrics.EditMetrics" method="addMetrics">
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metricView.ftl</result>
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metricInput.ftl</result>
+				<result name="error" type="json" />
+			</action>
+			<action name="viewMetrics" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.metrics.EditMetrics" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metricView.ftl</result>
+			</action>
+			<action name="editMetrics" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.metrics.EditMetrics" method="default">
+				<result name="input" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metricInput.ftl</result>
+			</action>
+			<action name="deleteMetric" class="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.metrics.EditMetrics" method="deleteMetric">
+				<result name="success" type="freemarker">/com/marvelution/bamboo/plugins/sonar/tasks/actions/metrics/metricView.ftl</result>
+			</action>
+		</package>
+	</xwork>
+
+	<!-- C O M P O N E N T S -->
+	<component key="sonarMetricsManager" name="Sonar Metrics Manager" class="com.marvelution.bamboo.plugins.sonar.tasks.web.metrics.DefaultSonarMetricsManager">
+		<interface>com.marvelution.bamboo.plugins.sonar.tasks.web.metrics.SonarMetricsManager</interface>
+	</component>
 
 </atlassian-plugin>

@@ -19,10 +19,12 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks.configuration;
 
-import com.atlassian.bamboo.plugins.maven.task.Maven3Config;
+import com.atlassian.bamboo.build.Buildable;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.v2.build.agent.capability.Requirement;
+import com.marvelution.bamboo.plugins.sonar.tasks.SonarMaven3Config;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -39,10 +41,10 @@ public class SonarMaven3BuildTaskConfigurator extends AbstractSonarMavenBuildTas
 	 */
 	@Override
 	@NotNull
-	public Set<Requirement> calculateRequirements(@NotNull TaskDefinition taskDefinition) {
-		final Set<Requirement> requirements = super.calculateRequirements(taskDefinition);
+	public Set<Requirement> calculateRequirements(TaskDefinition taskDefinition, Buildable buildable) {
+		final Set<Requirement> requirements = super.calculateRequirements(taskDefinition, buildable);
 		taskConfiguratorHelper.addSystemRequirementFromConfiguration(requirements, taskDefinition,
-			TaskConfigConstants.CFG_BUILDER_LABEL, Maven3Config.M3_CAPABILITY_PREFIX);
+			TaskConfigConstants.CFG_BUILDER_LABEL, SonarMaven3Config.M3_CAPABILITY_PREFIX);
 		return requirements;
 	}
 

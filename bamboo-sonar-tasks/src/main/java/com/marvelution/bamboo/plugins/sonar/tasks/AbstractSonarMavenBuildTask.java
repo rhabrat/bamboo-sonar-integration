@@ -29,7 +29,6 @@ import com.atlassian.bamboo.build.logger.interceptors.ErrorMemorisingInterceptor
 import com.atlassian.bamboo.build.logger.interceptors.LogMemorisingInterceptor;
 import com.atlassian.bamboo.build.logger.interceptors.StringMatchingInterceptor;
 import com.atlassian.bamboo.builder.MavenLogHelper;
-import com.atlassian.bamboo.plugins.maven.task.AbstractMavenConfig;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.bamboo.process.ProcessService;
@@ -54,11 +53,11 @@ import org.jetbrains.annotations.NotNull;
  * Abstract Sonar {@link TaskType} implementation for use with Maven 2 or 3
  * This reuses the Maven 2 and Maven 3 implementations provided by Atlassian
  * 
- * @param <CONFIG> the Type extending {@link AbstractMavenConfig}
+ * @param <CONFIG> the Type extending {@link AbstractSonarMavenConfig}
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
-public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractMavenConfig> implements TaskType {
+public abstract class AbstractSonarMavenBuildTask<CONFIG extends AbstractSonarMavenConfig> implements TaskType {
 
 	private static final String BUILD_SUCCESSFUL_MARKER = SystemProperty.BUILD_SUCCESSFUL_MARKER
 		.getValue("BUILD SUCCESS");

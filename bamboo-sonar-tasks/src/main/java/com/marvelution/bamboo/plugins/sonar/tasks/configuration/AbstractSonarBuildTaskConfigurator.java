@@ -28,14 +28,15 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.atlassian.bamboo.build.Buildable;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
-import com.atlassian.bamboo.task.TaskRequirementSupport;
+import com.atlassian.bamboo.task.BuildTaskRequirementSupport;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.v2.build.agent.capability.Requirement;
-import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigBean;
+import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -47,7 +48,7 @@ import com.opensymphony.xwork.TextProvider;
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */
 public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskConfigurator implements
-		TaskRequirementSupport, SonarConfigConstants, SonarTaskConfigurator {
+		BuildTaskRequirementSupport, SonarConfigConstants, SonarTaskConfigurator {
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractSonarBuildTaskConfigurator.class);
 
@@ -57,13 +58,13 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 		CFG_SONAR_EXTRA_CUSTOM_PARAMETERS);
 
 	protected TextProvider textProvider;
-	protected UIConfigBean uiConfigBean;
+	protected UIConfigSupport uiConfigBean;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<Requirement> calculateRequirements(TaskDefinition taskDefinition) {
+	public Set<Requirement> calculateRequirements(TaskDefinition taskDefinition, Buildable buildable) {
 		final Set<Requirement> requirements = Sets.newHashSet();
 		taskConfiguratorHelper.addJdkRequirement(requirements, taskDefinition, TaskConfigConstants.CFG_JDK_LABEL);
 		return requirements;
@@ -175,11 +176,11 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	}
 
 	/**
-	 * Setter for the {@link UIConfigBean}
+	 * Setter for the {@link UIConfigSupport}
 	 * 
-	 * @param uiConfigBean the {@link UIConfigBean}
+	 * @param uiConfigBean the {@link UIConfigSupport}
 	 */
-	public void setUiConfigBean(UIConfigBean uiConfigBean) {
+	public void setUiConfigBean(UIConfigSupport uiConfigBean) {
 		this.uiConfigBean = uiConfigBean;
 	}
 

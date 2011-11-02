@@ -22,10 +22,10 @@ package com.marvelution.bamboo.plugins.sonar.tasks.decorators;
 import java.util.List;
 import java.util.Map;
 
-import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
 import com.google.common.collect.Maps;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarMavenHelper;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Project properties to the Sonar Maven command if needed.
@@ -48,7 +48,7 @@ public class SonarMavenProjectConfigurationCommandDecorator extends
 	 */
 	@Override
 	protected void addPropertyToCommand(List<String> command, String key, String value) {
-		MavenHelper.addPropertyToCommand(command, key, value);
+		SonarMavenHelper.addPropertyToCommand(command, key, value);
 	}
 
 	/**

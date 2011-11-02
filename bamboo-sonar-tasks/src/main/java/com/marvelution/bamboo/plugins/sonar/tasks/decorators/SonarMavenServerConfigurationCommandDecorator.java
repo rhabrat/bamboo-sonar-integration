@@ -27,10 +27,10 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.plugins.maven.utils.MavenHelper;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.plugins.TaskProcessCommandDecorator;
 import com.google.common.collect.Maps;
+import com.marvelution.bamboo.plugins.sonar.tasks.utils.SonarMavenHelper;
 
 /**
  * {@link TaskProcessCommandDecorator} that adds the Sonar Server properties to the Maven command if needed.
@@ -67,7 +67,7 @@ public class SonarMavenServerConfigurationCommandDecorator extends AbstractSonar
 	 */
 	@Override
 	protected void addPropertyToCommand(List<String> command, String key, String value) {
-		MavenHelper.addPropertyToCommand(command, key, value);
+		SonarMavenHelper.addPropertyToCommand(command, key, value);
 	}
 
 	/**

@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.atlassian.bamboo.build.Buildable;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
@@ -66,8 +67,8 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 	 */
 	@Override
 	@NotNull
-	public Set<Requirement> calculateRequirements(@NotNull TaskDefinition taskDefinition) {
-		final Set<Requirement> requirements = super.calculateRequirements(taskDefinition);
+	public Set<Requirement> calculateRequirements(TaskDefinition taskDefinition, Buildable buildable) {
+		final Set<Requirement> requirements = super.calculateRequirements(taskDefinition, buildable);
 		taskConfiguratorHelper.addSystemRequirementFromConfiguration(requirements, taskDefinition,
 			TaskConfigConstants.CFG_BUILDER_LABEL, SonarRunnerCapabilityDefaultsHelper.SONAR_RUNNER_PREFIX);
 		return requirements;
