@@ -163,7 +163,14 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 			// Add a fake password context variable to display the password
 			context.put(CFG_SONAR_HOST_PASSWORD, SONAR_FAKE_PASSWORD);
 		}
-		// TODO Override JDBC settings if using defaults
+		if (!context.containsKey(CFG_SONAR_JDBC_URL) || (context.containsKey(CFG_SONAR_JDBC_URL)
+				&& StringUtils.isBlank((String) context.get(CFG_SONAR_JDBC_URL)))) {
+			// Using Sonar Default Database
+			context.put(CFG_SONAR_JDBC_URL, "jdbc:derby://localhost:1527/sonar;create=true");
+			context.put(CFG_SONAR_JDBC_DRIVER, "org.apache.derby.jdbc.ClientDriver");
+			context.put(CFG_SONAR_JDBC_USERNAME, "sonar");
+			context.put(CFG_SONAR_JDBC_PASSWORD, SONAR_FAKE_PASSWORD);
+		}
 	}
 
 	/**

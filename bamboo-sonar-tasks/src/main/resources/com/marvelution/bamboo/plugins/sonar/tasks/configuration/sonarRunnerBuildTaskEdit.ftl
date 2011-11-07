@@ -17,6 +17,7 @@
  ~ under the License.
  --]
 [#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport" --]
+[#import "/com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarBuildTask.ftl" as sbt /]
 
 [#assign addExecutableLink][@ui.displayAddExecutableInline executableKey='snr' /][/#assign]
 [@ww.select cssClass="builderSelectWidget" labelKey='executable.type' name='label'
@@ -31,11 +32,7 @@
 
 [@ww.textfield labelKey='builder.common.env' name='environmentVariables' cssClass="long-field" /]
 
-[@ui.bambooSection titleKey='sonar.host.configuration']
-	[@ww.textfield labelKey='sonar.host.url' name='sonarHostUrl' required='true' cssClass="long-field" /]
-	[@ww.textfield labelKey='sonar.host.username' name='sonarHostUsername' cssClass="long-field" /]
-	[@ww.textfield labelKey='sonar.host.password' name='sonarHostPassword' cssClass="long-field" /]
-[/@ui.bambooSection]
+[@sbt.showSonarHostEditor /]
 [@ww.checkbox labelKey='sonar.runner.project.setup' name='projectConfigured' toggle='true'/]
 [@ww.checkbox labelKey='sonar.runner.server.setup' name='serverConfigured' toggle='true'/]
 [@ui.bambooSection titleKey='sonar.project.configuration' dependsOn='projectConfigured' showOn='false']
@@ -50,9 +47,6 @@
 [/@ui.bambooSection]
 [@ui.bambooSection titleKey='sonar.server.configuration' dependsOn='serverConfigured' showOn='false']
 	[@ui.bambooSection titleKey='sonar.jdbc.configuration']
-		[@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
-		[@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]
-		[@ww.textfield labelKey='sonar.jdbc.password' name='sonarJdbcPassword' cssClass="long-field" /]
-		[@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
+	[@sbt.showSonarJDBCEditor /]
 	[/@ui.bambooSection]
 [/@ui.bambooSection]

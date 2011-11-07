@@ -16,6 +16,7 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  --]
+[#import "/com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarBuildTask.ftl" as sbt /]
 
 [#assign addJdkLink][@ui.displayAddJdkInline /][/#assign]
 [@ww.select cssClass="jdkSelectWidget"
@@ -28,11 +29,7 @@
 [@ww.textfield labelKey='builder.common.sub' name='workingSubDirectory' helpUri='working-directory.ftl' cssClass="long-field" /]
 [@ww.checkbox labelKey='sonar.plugin.preinstalled' name='sonarPluginPreInstalled' /]
 
-[@ui.bambooSection titleKey='sonar.host.configuration']
-	[@ww.textfield labelKey='sonar.host.url' name='sonarHostUrl' required='true' cssClass="long-field" /]
-	[@ww.textfield labelKey='sonar.host.username' name='sonarHostUsername' cssClass="long-field" /]
-	[@ww.textfield labelKey='sonar.host.password' name='sonarHostPassword' cssClass="long-field" /]
-[/@ui.bambooSection]
+[@sbt.showSonarHostEditor /]
 [@ui.bambooSection titleKey='sonar.jdbc.configuration']
 	[@ww.radio labelKey='sonar.jdbc.configuration.option' name='sonarJdbcOption'
                listKey='key' listValue='value' toggle='true'
@@ -42,10 +39,7 @@
         [@ww.textfield labelKey='sonar.jdbc.profile' name='sonarJdbcProfile' required='true' cssClass="long-field" /]
     [/@ui.bambooSection]
     [@ui.bambooSection dependsOn='sonarJdbcOption' showOn='sonarJdbcUseForm']
-        [@ww.textfield labelKey='sonar.jdbc.url' name='sonarJdbcUrl' cssClass="long-field" /]
-        [@ww.textfield labelKey='sonar.jdbc.username' name='sonarJdbcUsername' cssClass="long-field" /]
-        [@ww.textfield labelKey='sonar.jdbc.password' name='sonarJdbcPassword' cssClass="long-field" /]
-        [@ww.textfield labelKey='sonar.jdbc.driver' name='sonarJdbcDriver' cssClass="long-field" /]
+	[@sbt.showSonarJDBCEditor /]
     [/@ui.bambooSection]
 [/@ui.bambooSection]
 
