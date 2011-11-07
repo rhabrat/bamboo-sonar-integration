@@ -41,7 +41,7 @@ import java.util.Map;
 public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSonarBuildTaskConfigurator {
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractSonarMavenBuildTaskConfigurator.class);
-	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_GOALS, CFG_SONAR_JDBC_PROFILE,
+	private static final List<String> FIELDS_TO_COPY = ImmutableList.of(CFG_SONAR_JDBC_PROFILE,
 		CFG_SONAR_JDBC_OPTION, CFG_SONAR_PLUGIN_PREINSTALLED);
 
 	/**
@@ -53,18 +53,6 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 					@Nullable final TaskDefinition previousTaskDefinition) {
 		Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 		taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(config, params, FIELDS_TO_COPY);
-		StringBuilder goals = new StringBuilder();
-		if (params.getBoolean(CFG_SONAR_PLUGIN_PREINSTALLED)) {
-			goals.append(SONAR_PLUGIN_GOAL);
-		} else {
-			goals.append(SONAR_PLUGIN_GROUPID).append(":").append(SONAR_PLUGIN_ARTIFACTID).append(":")
-				.append(getSonarMavenPluginVersion());
-		}
-		goals.append(":").append(SONAR_PLUGIN_GOAL);
-		if (StringUtils.isNotBlank(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS))) {
-			goals.append(" ").append(params.getString(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS));
-		}
-		config.put(CFG_GOALS, goals.toString());
 		return config;
 	}
 

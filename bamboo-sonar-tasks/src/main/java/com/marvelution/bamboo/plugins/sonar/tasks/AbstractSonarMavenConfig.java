@@ -19,6 +19,8 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants.*;
+
 import com.atlassian.bamboo.process.CommandlineStringUtils;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.task.TaskContext;
@@ -79,13 +81,22 @@ public abstract class AbstractSonarMavenConfig {
 			((String) Preconditions.checkNotNull(
 				capabilityContext.getCapabilityValue(capabilityPrefix + "." + builderLabel),
 				"Builder path is not defined"));
-		String environmentVariables = (String) taskContext.getConfigurationMap().get(CFG_ENVIRONMENT_VARIABLES);
-		List<String> goals =
-			CommandlineStringUtils.tokeniseCommandline(StringUtils.replaceChars((String) taskContext
-				.getConfigurationMap().get(CFG_GOALS), "\r\n", "  "));
+		String environmentVariables = taskContext.getConfigurationMap().get(CFG_ENVIRONMENT_VARIABLES);
+		StringBuilder rawGoals = new StringBuilder();
+		if (taskContext.getConfigurationMap().getAsBoolean(CFG_SONAR_PLUGIN_PREINSTALLED)) {
+			rawGoals.append(SONAR_PLUGIN_GOAL);
+		} else {
+			rawGoals.append(SONAR_PLUGIN_GROUPID).append(":").append(SONAR_PLUGIN_ARTIFACTID).append(":")
+				.append(getSonarMavenPluginVersion());
+		}
+		rawGoals.append(":").append(SONAR_PLUGIN_GOAL);
+		if (StringUtils.isNotBlank(taskContext.getConfigurationMap().get(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS))) {
+			rawGoals.append(" ").append(taskContext.getConfigurationMap().get(CFG_SONAR_EXTRA_CUSTOM_PARAMETERS));
+		}
+		List<String> goals = CommandlineStringUtils.tokeniseCommandline(rawGoals.toString());
 		this.hasTests = taskContext.getConfigurationMap().getAsBoolean(CFG_HAS_TESTS);
-		String projectFilename = (String) taskContext.getConfigurationMap().get(CFG_PROJECT_FILENAME);
-		this.testResultsFilePattern = ((String) taskContext.getConfigurationMap().get(CFG_TEST_RESULTS_FILE_PATTERN));
+		String projectFilename = taskContext.getConfigurationMap().get(CFG_PROJECT_FILENAME);
+		this.testResultsFilePattern = taskContext.getConfigurationMap().get(CFG_TEST_RESULTS_FILE_PATTERN);
 		this.workingDirectory = taskContext.getWorkingDirectory();
 		this.commandline.add(getMavenExecutablePath(this.builderPath));
 		if (StringUtils.isNotEmpty(projectFilename)) {
@@ -161,5 +172,12 @@ public abstract class AbstractSonarMavenConfig {
 	public File getWorkingDirectory() {
 		return this.workingDirectory;
 	}
+
+	/**
+	 * Getter for the Sonar Maven Plugin version
+	 * 
+	 * @return the plugin version
+	 */
+	protected abstract String getSonarMavenPluginVersion();
 
 }

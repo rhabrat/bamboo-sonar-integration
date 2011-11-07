@@ -19,6 +19,8 @@
 
 package com.marvelution.bamboo.plugins.sonar.tasks;
 
+import static com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarConfigConstants.SONAR_M3_PLUGIN_VERSION;
+
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
@@ -54,6 +56,14 @@ public class SonarMaven3Config extends AbstractSonarMavenConfig {
 	 */
 	public static String getExecutableName() {
 		return SonarMaven2Config.getExecutableName();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getSonarMavenPluginVersion() {
+		return SONAR_M3_PLUGIN_VERSION;
 	}
 
 }

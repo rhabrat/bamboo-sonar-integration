@@ -83,8 +83,8 @@ public interface SonarConfigConstants {
 	String SONAR_PLUGIN_GROUPID = "org.codehaus.mojo";
 	String SONAR_PLUGIN_ARTIFACTID = "sonar-maven-plugin";
 	String SONAR_PLUGIN_GOAL = "sonar";
-	String SONAR_M2_PLUGIN_VERSION = "1.0-beta-2";
-	String SONAR_M3_PLUGIN_VERSION = "2.0-beta-2";
+	String SONAR_M2_PLUGIN_VERSION = "1.0";
+	String SONAR_M3_PLUGIN_VERSION = "2.0";
 	
 	String CFG_SONAR_PLUGIN_PREINSTALLED = "sonarPluginPreInstalled";
 
