@@ -28,7 +28,7 @@
 
 	[#macro gadgetSection gadgetKey]
 		<h2>${i18nResolver.getText('sonar.gadget.${gadgetKey}.title')}</h2>
-		<img class='gadgetScreenshot' src="[@cp.getStaticResourcePrefix /]/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetKey}-screenshot.png">
+		<img class='gadgetScreenshot' src="[@cp.getStaticResourcePrefix /]/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetKey}-thumb.png">
 		<div class='gadgetText'>
 		${i18nResolver.getText("sonar.gadget.${gadgetKey}.description")}<br/>
 		[@ww.text name='sonar.gadget.url']
