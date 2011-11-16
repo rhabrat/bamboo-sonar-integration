@@ -41,7 +41,7 @@
 	<properties>
 		<atlassian.plugin.name>Marvelution Bamboo Sonar Tasks Plugin</atlassian.plugin.name>
 		<atlassian.plugin.key>${atlassian.plugin.key.base}.tasks</atlassian.plugin.key>
-		<sonar.gadgets.version>1.4.1-SNAPSHOT</sonar.gadgets.version>
+		<sonar.gadgets.version>1.4.1</sonar.gadgets.version>
 		<sonar.gadgets.directory>${project.build.directory}/generated-resources/sonar-gadgets</sonar.gadgets.directory>
 	</properties>
 
