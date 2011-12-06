@@ -111,7 +111,7 @@ public abstract class AbstractSonarMavenBuildTaskConfigurator extends AbstractSo
 		LOGGER.debug("Validating Sonar JDBC Properties");
 		if (CFG_SONAR_JDBC_USE_PROFILE.equals(params.getString(CFG_SONAR_JDBC_OPTION))) {
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_JDBC_PROFILE))) {
-				errorCollection.addError(CFG_SONAR_JDBC_PROFILE, textProvider.getText("sonar.jdbc.profile.mandatory"));
+				errorCollection.addError(CFG_SONAR_JDBC_PROFILE, getI18nBean().getText("sonar.jdbc.profile.mandatory"));
 			}
 		} else {
 			super.validateSonarServer(params, errorCollection);

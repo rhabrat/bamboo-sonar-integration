@@ -27,11 +27,11 @@
     </ul>
 [/#assign]
 [@ui.bambooPanel titleKey='sonar.panel.header' cssClass='form-view-header' auiToolbar=artifactTools headerWeight='h1' /]
-<div id="main-panel">
-	<div class="column" id="primary">
+<div id="sonar-main-panel">
+	<div class="column" id="sonar-primary-column">
 		[@ui.renderWebPanels 'sonar.web.panel' /]
 	</div>
-	<div class="column" id="secondary">
+	<div class="column" id="sonar-secondary-column">
 		[@ui.renderWebPanels 'sonar.web.panel.gadgets' /]
 	</div>
 </div>
@@ -43,7 +43,9 @@
 			<h3>[@ww.text name='sonar.gadget.${gadgetId}.title' /]</h3>
 			<img src="${baseUrl}/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetId}-thumb.png" width="120" height="60" />
 			<p>[@ww.text name='sonar.gadget.${gadgetId}.description' /]</p>
-			<a href="${baseUrl}/rest/gadgets/1.0/g/com.marvelution.bamboo.plugins.sonar.tasks/gadgets/sonar-${gadgetId}-gadget.xml" target="_parent">[@ww.text name='sonar.gadget.url' /]</a>
+			[@ww.text name='sonar.gadget.xml']
+	            [@ww.param]${baseUrl}/rest/gadgets/1.0/g/${pluginKey}/gadgets/sonar-${gadgetId}-gadget.xml[/@ww.param]
+	        [/@ww.text]
 		</li>
 	[/#list]
 	</ol>

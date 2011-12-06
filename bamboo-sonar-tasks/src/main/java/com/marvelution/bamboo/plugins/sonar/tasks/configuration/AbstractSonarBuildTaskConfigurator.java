@@ -40,7 +40,6 @@ import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.opensymphony.xwork.TextProvider;
 
 /**
  * Base implementation of the {@link AbstractTaskConfigurator} for all the Sonar Tasks
@@ -57,7 +56,6 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 		CFG_SONAR_JDBC_DRIVER, CFG_SONAR_LANGUAGE, CFG_SONAR_JAVA_SOURCE, CFG_SONAR_JAVA_TARGET,
 		CFG_SONAR_EXTRA_CUSTOM_PARAMETERS);
 
-	protected TextProvider textProvider;
 	protected UIConfigSupport uiConfigBean;
 
 	/**
@@ -87,10 +85,10 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 	public void validateSonarHost(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 		LOGGER.debug("Validating Sonar Host Properties");
 		if (StringUtils.isBlank(params.getString(CFG_SONAR_HOST_URL))) {
-			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.mandatory"));
+			errorCollection.addError(CFG_SONAR_HOST_URL, getI18nBean().getText("sonar.host.url.mandatory"));
 		} else if (!params.getString(CFG_SONAR_HOST_URL).startsWith("http://")
 			&& !params.getString(CFG_SONAR_HOST_URL).startsWith("https://")) {
-			errorCollection.addError(CFG_SONAR_HOST_URL, textProvider.getText("sonar.host.url.invalid"));
+			errorCollection.addError(CFG_SONAR_HOST_URL, getI18nBean().getText("sonar.host.url.invalid"));
 		}
 	}
 
@@ -171,15 +169,6 @@ public abstract class AbstractSonarBuildTaskConfigurator extends AbstractTaskCon
 			context.put(CFG_SONAR_JDBC_USERNAME, "sonar");
 			context.put(CFG_SONAR_JDBC_PASSWORD, SONAR_FAKE_PASSWORD);
 		}
-	}
-
-	/**
-	 * Setter for the {@link TextProvider}
-	 * 
-	 * @param textProvider the {@link TextProvider}
-	 */
-	public void setTextProvider(TextProvider textProvider) {
-		this.textProvider = textProvider;
 	}
 
 	/**

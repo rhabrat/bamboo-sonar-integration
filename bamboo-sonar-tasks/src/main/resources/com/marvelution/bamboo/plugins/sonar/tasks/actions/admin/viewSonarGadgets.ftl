@@ -18,19 +18,19 @@
  --]
 <html>
 <head>
-	<title>[@ww.text name='sonar.gadgets.title' /]</title>
+	[@ui.header pageKey="sonar.gadgets.title" title=true /]
 	<meta name="decorator" content="adminpage">
 </head>
 <body>
-	<h1>[@ww.text name='sonar.gadgets.heading' /]</h1>
+	[@ui.header pageKey="sonar.gadgets.heading" /]
 	<p>[@ww.text name='sonar.gadgets.description' /]</p>
-	<div class="paddedClearer" ></div>
+	[@ui.clear /]
 
 	[#macro gadgetSection gadgetKey]
-		<h2>${i18nResolver.getText('sonar.gadget.${gadgetKey}.title')}</h2>
+		<h2>[@ww.text name='sonar.gadget.${gadgetKey}.title' /]</h2>
 		<img class='gadgetScreenshot' src="[@cp.getStaticResourcePrefix /]/download/resources/${pluginKey}/images/gadgets/sonar-${gadgetKey}-thumb.png">
 		<div class='gadgetText'>
-		${i18nResolver.getText("sonar.gadget.${gadgetKey}.description")}<br/>
+		[@ww.text name='sonar.gadget.${gadgetKey}.description'/]<br/>
 		[@ww.text name='sonar.gadget.url']
             [@ww.param]${baseUrl}/rest/gadgets/1.0/g/${pluginKey}/gadgets/sonar-${gadgetKey}-gadget.xml[/@ww.param]
         [/@ww.text]

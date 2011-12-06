@@ -16,23 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 /** Panel Styles **/
-#main-panel {
+#sonar-main-panel {
 	min-width: 966px;
 	padding: 12px;
 }
 
-#main-panel .column {
+#sonar-main-panel .column {
 	margin: 10px;
 	padding: 10px;
 }
 
-#primary {
+#sonar-primary-column {
 	width: 60%;
 	float: left;
 }
 
-#secondary {
+#sonar-secondary-column {
 	width: 30%;
 	clear: right;
 	float: right;

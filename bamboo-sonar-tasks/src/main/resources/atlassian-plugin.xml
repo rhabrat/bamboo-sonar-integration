@@ -112,6 +112,7 @@
         </resource>
 	</web-resource>
 	<web-resource key="sonar-panel" name="Sonar Panel Resources">
+		<context>atl.general</context>
 		<dependency>${atlassian.plugin.key}:panel-css</dependency>
 	</web-resource>
 

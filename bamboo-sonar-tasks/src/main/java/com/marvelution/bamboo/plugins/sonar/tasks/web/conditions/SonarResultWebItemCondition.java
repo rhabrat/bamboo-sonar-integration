@@ -35,7 +35,7 @@ import com.google.common.collect.Lists;
 import com.marvelution.bamboo.plugins.sonar.tasks.predicates.SonarPredicates;
 
 /**
- * {@link Condition} implementation to specify when to display teh Sonar tab
+ * {@link Condition} implementation to specify when to display the Sonar tab
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark Rekveld</a>
  */

@@ -17,14 +17,15 @@
  ~ under the License.
  --]
 
-[#-- @ftlvariable name="action" type="com.marvelution.bamboo.plugins.sonar.web.actions.chain.ViewChainSonarResult" --]
-[#-- @ftlvariable name="" type="com.marvelution.bamboo.plugins.sonar.web.actions.chain.ViewChainSonarResult" --]
+[#-- @ftlvariable name="action" type="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.chain.ViewChainSonarResult" --]
+[#-- @ftlvariable name="" type="com.marvelution.bamboo.plugins.sonar.tasks.web.actions.ViewChainSonarResult" --]
 [#-- @ftlvariable name="resultsSummary" type="com.atlassian.bamboo.chains.ChainResultsSummary" --]
 
 <html>
 <head>
     <title>[@ui.header pageKey='sonar.panel.title' object='${plan.name} ${chainResultNumber}' title=true /]</title>
     <meta name="tab" content="sonar" />
+    <meta name="decorator" content="result">
     ${webResourceManager.requireResource("${pluginKey}:sonar-panel")}
 </head>
 <body>

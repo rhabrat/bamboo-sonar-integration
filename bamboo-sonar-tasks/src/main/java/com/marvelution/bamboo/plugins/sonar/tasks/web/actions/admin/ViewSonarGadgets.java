@@ -21,8 +21,8 @@ package com.marvelution.bamboo.plugins.sonar.tasks.web.actions.admin;
 
 import java.util.Collection;
 
-import com.atlassian.bamboo.configuration.GlobalAdminAction;
-import com.atlassian.sal.api.message.I18nResolver;
+import com.atlassian.bamboo.ww2.BambooActionSupport;
+import com.atlassian.bamboo.ww2.aware.permissions.GlobalAdminSecurityAware;
 import com.marvelution.bamboo.plugins.sonar.tasks.utils.PluginHelper;
 import com.marvelution.gadgets.sonar.utils.SonarGadgetsUtils;
 
@@ -31,12 +31,12 @@ import com.marvelution.gadgets.sonar.utils.SonarGadgetsUtils;
  * 
  * @author <a href="mailto:markrekveld@marvelution.com">Mark rekveld</a>
  */
-public class ViewSonarGadgets extends GlobalAdminAction {
+@SuppressWarnings("unchecked")
+public class ViewSonarGadgets extends BambooActionSupport implements GlobalAdminSecurityAware {
 
 	private static final long serialVersionUID = 1L;
 
 	private SonarGadgetsUtils gadgetsUtils;
-	private I18nResolver i18nResolver;
 
 	/**
 	 * Get the atlassian plugin key
@@ -73,25 +73,6 @@ public class ViewSonarGadgets extends GlobalAdminAction {
 	 */
 	public void setGadgetsUtils(SonarGadgetsUtils gadgetsUtils) {
 		this.gadgetsUtils = gadgetsUtils;
-	}
-
-	/**
-	 * Getter for i18nResolver
-	 * 
-	 * @return the i18nResolver
-	 */
-	public I18nResolver getI18nResolver() {
-		return i18nResolver;
-	}
-
-	
-	/**
-	 * Setter for i18nResolver
-	 * 
-	 * @param i18nResolver the i18nResolver to set
-	 */
-	public void setI18nResolver(I18nResolver i18nResolver) {
-		this.i18nResolver = i18nResolver;
 	}
 
 }

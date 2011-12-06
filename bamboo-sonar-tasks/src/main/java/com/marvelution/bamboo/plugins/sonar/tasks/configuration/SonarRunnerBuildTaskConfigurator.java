@@ -103,21 +103,21 @@ public class SonarRunnerBuildTaskConfigurator extends AbstractSonarBuildTaskConf
 		LOGGER.debug("Validating Sonar Project Properties");
 		if (!params.getBoolean(CFG_SONAR_PROJECT_CONFIGURED)) {
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_PROJECT_KEY))) {
-				errorCollection.addError(CFG_SONAR_PROJECT_KEY, textProvider.getText("sonar.project.key.mandatory"));
+				errorCollection.addError(CFG_SONAR_PROJECT_KEY, getI18nBean().getText("sonar.project.key.mandatory"));
 			} else if (params.getString(CFG_SONAR_PROJECT_KEY).indexOf(":") == -1) {
-				errorCollection.addError(CFG_SONAR_PROJECT_KEY, textProvider.getText("sonar.project.key.invalid"));
+				errorCollection.addError(CFG_SONAR_PROJECT_KEY, getI18nBean().getText("sonar.project.key.invalid"));
 			}
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_PROJECT_NAME))) {
-				errorCollection.addError(CFG_SONAR_PROJECT_NAME, textProvider.getText("sonar.project.name.mandatory"));
+				errorCollection.addError(CFG_SONAR_PROJECT_NAME, getI18nBean().getText("sonar.project.name.mandatory"));
 			}
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_PROJECT_VERSION))) {
 				errorCollection.addError(CFG_SONAR_PROJECT_VERSION,
-					textProvider.getText("sonar.project.version.mandatory"));
+					getI18nBean().getText("sonar.project.version.mandatory"));
 			}
 			if (StringUtils.isBlank(params.getString(CFG_SONAR_SOURCES))) {
-				errorCollection.addError(CFG_SONAR_SOURCES, textProvider.getText("sonar.sources.mandatory"));
+				errorCollection.addError(CFG_SONAR_SOURCES, getI18nBean().getText("sonar.sources.mandatory"));
 			} else if (StringUtils.split(params.getString(CFG_SONAR_SOURCES), DIRECTORY_SEPARATOR).length < 1) {
-				errorCollection.addError(CFG_SONAR_SOURCES, textProvider.getText("sonar.sources.mandatory"));
+				errorCollection.addError(CFG_SONAR_SOURCES, getI18nBean().getText("sonar.sources.mandatory"));
 			}
 		}
 	}
