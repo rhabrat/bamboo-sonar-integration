@@ -27,6 +27,7 @@
 
 	<!-- I 1 8 N   R E S O U R C E S -->
 	<resource type="i18n" name="Sonar Tasks I18n" location="com.marvelution.bamboo.plugins.sonar.tasks.i18n"/>
+	<resource type="download" name="icon-16.png" location="com/marvelution/bamboo/plugins/sonar/images/icon-16.png" />
 
 	<!-- T A S K   T Y P E   D E F I N I T I O N S -->
 	<taskType key="task.builder.sonar" name="Sonar Runner" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarRunnerBuildTask">
@@ -38,7 +39,7 @@
 		<configuration class="com.marvelution.bamboo.plugins.sonar.tasks.configuration.SonarRunnerBuildTaskConfigurator" />
 		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarRunnerBuildTaskEdit.ftl"/>
 		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarRunnerBuildTaskView.ftl"/>
-		<resource type="download" name="icon" location="icon.png"/>
+		<resource type="download" name="icon" location="com/marvelution/bamboo/plugins/sonar/images/icon-16.png"/>
 	</taskType>
 	<taskType key="task.builder.sonar2" name="Sonar Maven 2.x" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarMaven2BuildTask">
 		<description>Execute a Sonar Analysis using Maven 2.x</description>
@@ -50,7 +51,7 @@
 		<capabilityDefaultsHelper class="com.atlassian.bamboo.plugins.maven.task.Maven2CapabilityDefaultsHelper"/>
 		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven2BuildTaskEdit.ftl"/>
 		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven2BuildTaskView.ftl"/>
-		<resource type="download" name="icon" location="icon.png"/>
+		<resource type="download" name="icon" location="com/marvelution/bamboo/plugins/sonar/images/icon-16.png"/>
 	</taskType>
 	<taskType key="task.builder.sonar3" name="Sonar Maven 3.x" class="com.marvelution.bamboo.plugins.sonar.tasks.SonarMaven3BuildTask">
 		<description>Execute a Sonar Analysis using Maven 3.x</description>
@@ -62,7 +63,7 @@
 		<capabilityDefaultsHelper class="com.atlassian.bamboo.plugins.maven.task.Maven3CapabilityDefaultsHelper"/>
 		<resource type="freemarker" name="edit" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven3BuildTaskEdit.ftl"/>
 		<resource type="freemarker" name="view" location="com/marvelution/bamboo/plugins/sonar/tasks/configuration/sonarMaven3BuildTaskView.ftl"/>
-		<resource type="download" name="icon" location="icon.png"/>
+		<resource type="download" name="icon" location="com/marvelution/bamboo/plugins/sonar/images/icon-16.png"/>
 	</taskType>
 
 	<!-- T A S K   P R O C E S S   C O M M A N D   D E C O R A T O R   DE F I N I T I O N S -->
@@ -129,6 +130,9 @@
 	<!-- W E B   S E C T I O N S -->
 	<web-section key="sonar" name="Sonar" location="system.admin" weight="75">
 		<label key="websections.system.admin.sonar"/>
+		<icon height="16" width="16">
+			<link>/download/resources/${atlassian.plugin.key}/icon-16.png</link>
+		</icon>
 	</web-section>
 
 	<!-- A D M I N   W E B   I T E M S -->
