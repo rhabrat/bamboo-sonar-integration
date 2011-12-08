@@ -23,7 +23,7 @@
 	<parent>
 		<artifactId>marvelution</artifactId>
 		<groupId>com.marvelution</groupId>
-		<version>13</version>
+		<version>14</version>
 	</parent>
 	<groupId>com.marvelution.bamboo.plugins</groupId>
 	<artifactId>bamboo-sonar-integration</artifactId>

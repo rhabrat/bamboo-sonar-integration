@@ -41,7 +41,7 @@
 	<properties>
 		<atlassian.plugin.name>Marvelution Bamboo Sonar Tasks Plugin</atlassian.plugin.name>
 		<atlassian.plugin.key>${atlassian.plugin.key.base}.tasks</atlassian.plugin.key>
-		<sonar.gadgets.version>1.4.1</sonar.gadgets.version>
+		<sonar.gadgets.version>1.5.0</sonar.gadgets.version>
 		<sonar.gadgets.directory>${project.build.directory}/generated-resources/sonar-gadgets</sonar.gadgets.directory>
 	</properties>
 
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>com.marvelution.security</groupId>
 			<artifactId>marvelution-security-crypto</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 			<exclusions>
