@@ -30,7 +30,7 @@
 
 	<name>Bamboo Sonar Integration :: Tasks Module</name>
 	<description>Set of Sonar related tasks for Atlassian Bamboo</description>
-	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.version}/${project.artifactId}</url>
+	<url>http://apidocs.marvelution.com/bamboo-sonar-integration/${project.parent.version}/${project.artifactId}</url>
 
 	<scm>
 		<connection>scm:git:git@github.com:Marvelution/bamboo-sonar-integration.git/bamboo-sonar-tasks</connection>

@@ -30,7 +30,7 @@
 
 	<name>Bamboo Sonar Integration :: Distribution Package</name>
 	<description>Distribution package for the Bamboo Sonar Integration project</description>
-	<url>http://apidocs.marvelution.com/${project.parent.artifactId}/${project.version}/${project.artifactId}</url>
+	<url>http://apidocs.marvelution.com/bamboo-sonar-integration/${project.parent.version}/${project.artifactId}</url>
 	<inceptionYear>2011</inceptionYear>
 	
 	<scm>

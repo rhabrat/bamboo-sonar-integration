@@ -38,7 +38,7 @@
 	
 	<name>Bamboo Sonar Integration</name>
 	<description>Integration projects that, through several Bamboo plugins, support the integration between Atlassian Bamboo and Sonar</description>
-	<url>http://apidocs.marvelution.com/${project.artifactId}/${project.version}/</url>
+	<url>http://apidocs.marvelution.com/bamboo-sonar-integration/${project.version}/</url>
 	<inceptionYear>2011</inceptionYear>
 	<organization>
 		<name>Marvelution</name>
