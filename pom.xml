@@ -76,7 +76,7 @@
 	<distributionManagement>
 		<site>
 			<id>marvelution.website</id>
-			<url>dav:http://repository.marvelution.com/content/sites/apidocs/${project.artifactId}/${project.version}/</url>
+			<url>dav:http://repository.marvelution.com/content/sites/apidocs/bamboo-sonar-integration/${project.version}/</url>
 		</site>
 	</distributionManagement>
 
@@ -85,7 +85,7 @@
 		<atlassian.bamboo.version>3.3</atlassian.bamboo.version>
 		<sonar.version>2.8</sonar.version>
 		<atlassian.plugin.key.base>${project.groupId}.sonar</atlassian.plugin.key.base>
-		<stagingSiteURL>dav:http://repository.marvelution.com/content/sites/apidocs-staging/${project.artifactId}/${project.version}/</stagingSiteURL>
+		<stagingSiteURL>dav:http://repository.marvelution.com/content/sites/apidocs-staging/bamboo-sonar-integration/${project.version}/</stagingSiteURL>
 	</properties>
 
 	<dependencies>
